@@ -58,20 +58,6 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
       <slot />
     </main>
     <Footer />
-    <script>
-      // Decide slide direction from the nav order so pages to the right slide in
-      // from the right and pages to the left slide in from the left.
-      const order = ["/", "/research/", "/projects/", "/publications/", "/cv/"];
-      const norm = (p: string) => (p.endsWith("/") ? p : p + "/");
-      document.addEventListener("astro:before-preparation", (event) => {
-        const e = event as CustomEvent & { from?: URL; to?: URL };
-        const from = order.indexOf(norm(e.from?.pathname ?? location.pathname));
-        const to = order.indexOf(norm(e.to?.pathname ?? location.pathname));
-        let dir = "fade";
-        if (from !== -1 && to !== -1 && from !== to) dir = to > from ? "forward" : "back";
-        document.documentElement.dataset.dir = dir;
-      });
-    </script>
   </body>
 </html>
 
