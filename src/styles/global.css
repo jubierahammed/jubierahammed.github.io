@@ -2,19 +2,21 @@
    Design tokens
    --------------------------------------------------------------- */
 :root {
-  /* Accent: muted forest green */
-  --color-accent: #2f5d3a;
-  --color-accent-strong: #244a2e;
-  --color-accent-soft: #dde9df;
-  --color-accent-tint: #e8f0e9;
+  /* Accent: deep indigo, matched to the Google Site theme, with a yellow highlight */
+  --color-accent: #2c0a71;
+  --color-accent-strong: #1f0752;
+  --color-accent-soft: #e4dff3;
+  --color-accent-tint: #f1eef9;
+  --color-highlight: #ffd400;
+  --color-highlight-soft: #fff4b8;
 
   /* Neutrals */
   --color-bg: #ffffff;
-  --color-surface: #f6f8f6;
-  --color-text: #1c1f1a;
-  --color-text-muted: #59605a;
-  --color-text-faint: #8a908a;
-  --color-border: #dfe3df;
+  --color-surface: #f6f5fa;
+  --color-text: #1a1626;
+  --color-text-muted: #5b566b;
+  --color-text-faint: #8c879b;
+  --color-border: #e2dfea;
 
   /* Type */
   --font-serif: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
