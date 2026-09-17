@@ -2,7 +2,7 @@
 /**
  * Page-level image viewer. Include once per page that uses <Gallery />.
  * Any <a data-lightbox data-caption="..."> opens here; arrow keys move
- * within the same gallery.
+ * within the same gallery. Re-initialises after client-side navigation.
  */
 ---
 
@@ -17,40 +17,35 @@
 </dialog>
 
 <script>
-  const dialog = document.getElementById('lightbox') as HTMLDialogElement | null;
+  let group: HTMLAnchorElement[] = [];
+  let index = 0;
 
-  if (dialog) {
+  function currentDialog() {
+    return document.getElementById('lightbox') as HTMLDialogElement | null;
+  }
+
+  function show(i: number) {
+    const dialog = currentDialog();
+    if (!dialog || group.length === 0) return;
+    index = (i + group.length) % group.length;
+    const link = group[index];
     const img = dialog.querySelector('img') as HTMLImageElement;
     const caption = dialog.querySelector('figcaption') as HTMLElement;
-    const prevBtn = dialog.querySelector('[data-prev]') as HTMLButtonElement;
-    const nextBtn = dialog.querySelector('[data-next]') as HTMLButtonElement;
+    img.src = link.href;
+    img.alt = link.dataset.caption ?? '';
+    caption.textContent = link.dataset.caption ?? '';
+    const single = group.length < 2;
+    (dialog.querySelector('[data-prev]') as HTMLButtonElement).hidden = single;
+    (dialog.querySelector('[data-next]') as HTMLButtonElement).hidden = single;
+  }
 
-    let group: HTMLAnchorElement[] = [];
-    let index = 0;
+  function setup() {
+    const dialog = currentDialog();
+    if (!dialog || dialog.dataset.ready) return;
+    dialog.dataset.ready = 'true';
 
-    function show(i: number) {
-      index = (i + group.length) % group.length;
-      const link = group[index];
-      img.src = link.href;
-      img.alt = link.dataset.caption ?? '';
-      caption.textContent = link.dataset.caption ?? '';
-      const single = group.length < 2;
-      prevBtn.hidden = single;
-      nextBtn.hidden = single;
-    }
-
-    document.addEventListener('click', (event) => {
-      const link = (event.target as HTMLElement).closest('a[data-lightbox]') as HTMLAnchorElement | null;
-      if (!link) return;
-      event.preventDefault();
-      const scope = link.closest('.gallery') ?? document;
-      group = Array.from(scope.querySelectorAll<HTMLAnchorElement>('a[data-lightbox]'));
-      show(group.indexOf(link));
-      dialog.showModal();
-    });
-
-    prevBtn.addEventListener('click', () => show(index - 1));
-    nextBtn.addEventListener('click', () => show(index + 1));
+    dialog.querySelector('[data-prev]')?.addEventListener('click', () => show(index - 1));
+    dialog.querySelector('[data-next]')?.addEventListener('click', () => show(index + 1));
     dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
 
     dialog.addEventListener('click', (event) => {
@@ -63,9 +58,28 @@
     });
 
     dialog.addEventListener('close', () => {
-      img.removeAttribute('src');
+      dialog.querySelector('img')?.removeAttribute('src');
     });
   }
+
+  // One delegated listener for the whole document; survives page swaps.
+  if (!(window as any).__lightboxDelegated) {
+    (window as any).__lightboxDelegated = true;
+    document.addEventListener('click', (event) => {
+      const link = (event.target as HTMLElement).closest('a[data-lightbox]') as HTMLAnchorElement | null;
+      if (!link) return;
+      const dialog = currentDialog();
+      if (!dialog) return;
+      event.preventDefault();
+      const scope = link.closest('.gallery') ?? document;
+      group = Array.from(scope.querySelectorAll<HTMLAnchorElement>('a[data-lightbox]'));
+      show(group.indexOf(link));
+      dialog.showModal();
+    });
+  }
+
+  setup();
+  document.addEventListener('astro:page-load', setup);
 </script>
 
 <style>
@@ -87,7 +101,7 @@
   }
 
   .lightbox::backdrop {
-    background: rgba(20, 24, 20, 0.88);
+    background: rgba(18, 12, 34, 0.88);
   }
 
   .lightbox__figure {
