@@ -35,8 +35,8 @@ export interface Position {
 }
 
 export const tagline = {
-  lead: 'Remote sensing, GIS, and machine learning',
-  rest: 'for disaster risk, coastal land change, and social vulnerability.',
+  lead: 'Reading coasts and cities from orbit',
+  rest: 'to find where disasters land, and on whom.',
 };
 
 export const interestsStatement = 'Earth observation for disaster risk, land change, and the communities exposed to both.';
