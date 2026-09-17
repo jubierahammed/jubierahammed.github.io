@@ -16,6 +16,7 @@ const defaultDescription =
 
 const { title, description = defaultDescription, wide = false } = Astro.props;
 const pageTitle = title ? `${title} · ${siteName}` : `${siteName} · Disaster Risk, Remote Sensing & GIS`;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
@@ -29,6 +30,8 @@ const pageTitle = title ? `${title} · ${siteName}` : `${siteName} · Disaster R
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
