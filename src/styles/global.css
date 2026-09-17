@@ -271,3 +271,32 @@ pre {
   }
 }
 
+/* ---------------------------------------------------------------
+   Page transitions (Astro ClientRouter). The header and footer stay
+   put; the main column cross-fades with no movement.
+   --------------------------------------------------------------- */
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(page) {
+  animation: 120ms ease-out both fade-out;
+}
+
+::view-transition-new(page) {
+  animation: 200ms ease-in both fade-in;
+}
