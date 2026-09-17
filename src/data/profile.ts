@@ -29,6 +29,8 @@ export interface Position {
   dates: string;
   /** Secondary line, e.g. supervisor or collaborator. */
   meta?: string;
+  /** Informal collaboration rather than a held position; hidden from the home page overview. */
+  collaboration?: boolean;
   bullets: string[];
 }
 
@@ -112,6 +114,7 @@ export const researchExperience: Position[] = [
   {
     title: 'Independent Research Collaboration',
     dates: '2025 – Present',
+    collaboration: true,
     meta: 'With M. Shahriar Sonet, Ph.D. candidate in Geospatial Information Sciences, University of Texas at Dallas',
     bullets: [
       'Conducting a census-tract-level analysis of compound heat-flood exposure and social vulnerability across Houston, Miami, and Norfolk, integrating NFIP flood claims, CDC social vulnerability data, NHGIS tract crosswalks, and GEE-derived land surface temperature.',
