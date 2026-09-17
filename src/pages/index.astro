@@ -61,7 +61,7 @@ const positions = [...researchExperience, ...teachingExperience].filter((p) => !
     <ul class="interests__grid">
       {
         interests.map((item) => (
-          <li class="interest">
+          <li class="interest glass">
             <h3 class="interest__title">{item.title}</h3>
             <p class="interest__blurb no-justify">{item.blurb}</p>
           </li>
@@ -234,12 +234,39 @@ const positions = [...researchExperience, ...teachingExperience].filter((p) => !
   }
 
   .interest {
+    position: relative;
     margin: 0;
     padding: 1.1rem 1.25rem 1.2rem;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
     border-left: 3px solid var(--color-accent);
-    border-radius: var(--radius);
+    border-radius: 10px;
+    transition: transform 160ms ease, box-shadow 160ms ease;
+  }
+
+  .interest:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.75),
+      0 2px 4px rgba(20, 30, 20, 0.05),
+      0 18px 36px -16px rgba(20, 30, 20, 0.28);
+  }
+
+  /* Soft tint behind the cards so the glass has something to diffuse. */
+  .interests__grid {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .interests__grid::before {
+    content: "";
+    position: absolute;
+    inset: -2rem -1rem;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(38% 55% at 12% 18%, color-mix(in srgb, var(--color-accent-soft) 85%, transparent), transparent 70%),
+      radial-gradient(40% 60% at 88% 82%, color-mix(in srgb, var(--color-accent-soft) 70%, transparent), transparent 70%),
+      radial-gradient(30% 40% at 55% 50%, color-mix(in srgb, #ffffff 40%, transparent), transparent 70%);
+    filter: blur(24px);
   }
 
   .interest__title {

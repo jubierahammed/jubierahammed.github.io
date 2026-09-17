@@ -82,7 +82,7 @@ const sections = [
     </p>
   </PageHeader>
 
-  <nav class="toc" aria-label="Projects on this page">
+  <nav class="toc glass" aria-label="Projects on this page">
     {
       sections.map((section) => (
         <div class="toc__group">
@@ -545,9 +545,7 @@ const sections = [
     gap: 1.5rem 2rem;
     margin-bottom: var(--section-gap);
     padding: 1.25rem 1.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    background: var(--color-surface);
+    border-radius: 10px;
   }
 
   .toc__title {
