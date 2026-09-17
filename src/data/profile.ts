@@ -29,8 +29,8 @@ export interface Position {
   dates: string;
   /** Secondary line, e.g. supervisor or collaborator. */
   meta?: string;
-  /** Informal collaboration rather than a held position; hidden from the home page overview. */
-  collaboration?: boolean;
+  /** Research activity rather than an employed position; hidden from the home page Positions list. */
+  notPosition?: boolean;
   bullets: string[];
 }
 
@@ -105,6 +105,7 @@ export const researchExperience: Position[] = [
     title: 'Graduate Research',
     org: 'Department of Geosciences, Texas Tech University',
     dates: 'Aug 2025 – Present',
+    notPosition: true,
     meta: 'Supervisor: Dr. Chao Xu',
     bullets: [
       'Conducted a spatial and quantile analysis of infrastructure precarity and social vulnerability during Winter Storm Uri in Harris County, using VIIRS Black Marble nighttime light deficit data against ACS and social vulnerability variables; methods included Spearman correlation, OLS with clustered standard errors, robust regression, quantile regression, Moran’s I, and a spatial lag model.',
@@ -114,7 +115,7 @@ export const researchExperience: Position[] = [
   {
     title: 'Independent Research Collaboration',
     dates: '2025 – Present',
-    collaboration: true,
+    notPosition: true,
     meta: 'With M. Shahriar Sonet, Ph.D. candidate in Geospatial Information Sciences, University of Texas at Dallas',
     bullets: [
       'Conducting a census-tract-level analysis of compound heat-flood exposure and social vulnerability across Houston, Miami, and Norfolk, integrating NFIP flood claims, CDC social vulnerability data, NHGIS tract crosswalks, and GEE-derived land surface temperature.',
