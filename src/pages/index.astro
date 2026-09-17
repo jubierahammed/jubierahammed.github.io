@@ -2,11 +2,21 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
-import Entry from '../components/Entry.astro';
 import ResearchCard from '../components/ResearchCard.astro';
 import portrait from '../assets/jubier-ahammed.png';
-import logoTTU from '../assets/logo-texas-tech.png';
-import logoBUP from '../assets/logo-bup.png';
+import {
+  tagline,
+  interestsStatement,
+  interests,
+  education,
+  researchExperience,
+  teachingExperience,
+  contact,
+} from '../data/profile';
+import { publications } from '../data/publications';
+
+const featured = publications.filter((p) => p.featured);
+const positions = [...researchExperience, ...teachingExperience];
 ---
 
 <BaseLayout>
@@ -15,9 +25,7 @@ import logoBUP from '../assets/logo-bup.png';
     <div class="hero__text">
       <p class="eyebrow">Geography &amp; Environmental Studies · Texas Tech University</p>
       <h1 id="about-heading">Md Jubier Ahammed</h1>
-      <p class="hero__tagline no-justify">
-        Disaster risk, remote sensing, GIS, and machine learning:<br />mapping how landscapes change and who bears the cost.
-      </p>
+      <p class="hero__tagline no-justify">{tagline.lead}<br />{tagline.rest}</p>
       <p>
         I got into this field watching disasters unfold, floods, storms, the changing shape of coastlines, and
         wanting to understand not just where these hazards strike, but who ends up bearing the cost. That question
@@ -33,12 +41,8 @@ import logoBUP from '../assets/logo-bup.png';
         how I think about applying remote sensing to real, on the ground risk. I currently serve as a graduate
         teaching assistant.
       </p>
-      <p class="hero__interests">
-        <strong>Research interests:</strong> natural hazards and disaster risk; remote sensing and GIS; machine
-        learning and GeoAI; spatial analysis; social vulnerability and climate adaptation; land use/land cover change;
-        coastal wetland mapping.
-      </p>
       <ul class="hero__links">
+        <li><a href="#interests">Research interests</a></li>
         <li><a href="#research">Featured research</a></li>
         <li><a href="/cv/">Curriculum vitae</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -49,134 +53,105 @@ import logoBUP from '../assets/logo-bup.png';
     </figure>
   </section>
 
-  <Section id="education" title="Education">
-    <Entry
-      title="M.S. in Geography and Environmental Studies"
-      org="Texas Tech University, Lubbock, TX"
-      dates="Aug 2025 – May 2027 (expected)"
-      meta="GPA: 3.863"
-      logo={logoTTU}
-      logoAlt="Texas Tech University seal"
-    >
-      <p>
-        Thesis: <em
-          >Transferability of a Google Earth Engine Land Cover Classification Framework Between the Ganges and
-          Mississippi Deltas</em
-        >
-      </p>
-    </Entry>
+  <!-- Research interests -->
+  <section id="interests" class="interests" aria-labelledby="interests-heading">
+    <p class="eyebrow">Research Interests</p>
+    <h2 id="interests-heading" class="interests__statement">{interestsStatement}</h2>
+    <ul class="interests__grid">
+      {
+        interests.map((item) => (
+          <li class="interest">
+            <h3 class="interest__title">{item.title}</h3>
+            <p class="interest__blurb no-justify">{item.blurb}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 
-    <Entry
-      title="B.S.S. in Disaster and Human Security Management"
-      org="Bangladesh University of Professionals, Dhaka, Bangladesh"
-      dates="Jan 2020 – Jan 2024"
-      meta="GPA: 3.90 / 4.00"
-      logo={logoBUP}
-      logoAlt="Bangladesh University of Professionals logo"
-    >
-      <p>
-        Thesis: <em
-          >Assessing and Prediction of Spatio-temporal Changes of LULC using CA-ANN Model and its Socioeconomic
-          Implications for Coastal Bangladesh: A Case Study of Dacope Sub-district</em
-        >
-      </p>
-    </Entry>
-  </Section>
+  <!-- Compact overview: education and positions. Full detail lives on the CV page. -->
+  <Section id="background" title="Background">
+    <div class="overview">
+      <div class="overview__col">
+        <h3 class="overview__heading">Education</h3>
+        <ul class="overview__list">
+          {
+            education.map((e) => (
+              <li class="overview__item overview__item--logo">
+                <Image src={e.logo} alt={e.logoAlt} width={96} height={96} class="overview__logo" />
+                <div>
+                  <p class="overview__title no-justify">{e.degree}</p>
+                  <p class="overview__meta no-justify">
+                    {e.institution} · {e.dates}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
 
-  <Section id="experience" title="Experience">
-    <h3 class="subheading subheading--first">Research Experience</h3>
-
-    <Entry title="Graduate Research" org="Department of Geosciences, Texas Tech University" dates="Aug 2025 – Present">
-      <p>
-        Conducting spatial and quantile analysis of infrastructure precarity and social vulnerability during Winter
-        Storm Uri in Harris County, using VIIRS Black Marble nighttime light deficit data against ACS and social
-        vulnerability variables. Also developing a Landsat random forest classification of tidal flats and wetlands in
-        the Ganges Delta using Google Earth Engine.
-      </p>
-    </Entry>
-
-    <Entry title="Independent Research Collaboration" dates="2025 – Present">
-      <p>
-        Working with M. Shahriar Sonet (PhD candidate, University of Texas at Dallas) on a census-tract-level analysis
-        of compound heat-flood exposure and social vulnerability across Houston, Miami, and Norfolk.
-      </p>
-    </Entry>
-
-    <Entry
-      title="Research Consultant, Remote Sensing Division"
-      org="CEGIS, Dhaka, Bangladesh"
-      dates="Jan 2024 – Dec 2024"
-    >
-      <p>
-        Created, updated, and digitized land use/land cover maps for Chittagong division; georeferenced satellite
-        imagery; managed databases and resolved topological errors; conducted crop pattern analysis.
-      </p>
-    </Entry>
-
-    <Entry
-      title="Research Assistant, Geospatial Health Studies Division"
-      org="CHIRAL, Dhaka, Bangladesh"
-      dates="Apr 2023 – Dec 2023"
-    >
-      <p>
-        Collected spatial and non-spatial data and conducted thematic analysis on environmental factors influencing
-        dengue outbreaks. Trained interns on mobile data collection and GIS tools (KoboToolbox, ArcGIS).
-      </p>
-    </Entry>
-
-    <h3 class="subheading">Teaching Experience</h3>
-
-    <Entry
-      title="Graduate Teaching Assistant"
-      org="Department of Geosciences, Texas Tech University"
-      dates="Aug 2025 – Present"
-    >
-      <p>Courses: Introduction to GIS; Regional Geography of the World; Global Environmental Science.</p>
-      <p>Grade coursework and exams, assist students during lab sessions, and hold weekly office hours.</p>
-    </Entry>
+      <div class="overview__col">
+        <h3 class="overview__heading">Positions</h3>
+        <ul class="overview__list">
+          {
+            positions.map((p) => (
+              <li class="overview__item">
+                <p class="overview__title no-justify">{p.title}</p>
+                <p class="overview__meta no-justify">
+                  {p.org ? `${p.org} · ` : ''}
+                  {p.dates}
+                </p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+    <p class="section-link no-justify">
+      <a href="/cv/">Full CV with thesis details, responsibilities, awards, and skills</a>
+    </p>
   </Section>
 
   <Section id="research" title="Featured Research">
-    <ResearchCard
-      title="Spatial Patterns of Post-Storm Recovery Revealed by Nighttime Lights: Evidence from Harris County, Texas"
-      status="Preprint · Under review, ISPRS International Journal of Geo-Information"
-      href="/publications/#post-storm-recovery"
-    />
-
-    <ResearchCard
-      title="Social Vulnerability and Compound Heat-Flood Exposure in Houston, Miami, and Norfolk: A Census-Tract-Level Analysis"
-      status="Preprint · Under review, Regional Environmental Change"
-      href="/publications/#compound-heat-flood"
-    />
-
-    <p class="section-link no-justify"><a href="/publications/">All publications</a> · <a href="/research/">Thesis and ongoing research</a></p>
+    {featured.map((p) => <ResearchCard title={p.title} status={p.status} href={`/publications/#${p.id}`} />)}
+    <p class="section-link no-justify">
+      <a href="/publications/">All publications</a> · <a href="/research/">Thesis and ongoing research</a>
+    </p>
   </Section>
 
   <Section id="contact" title="Contact">
     <dl class="contact">
       <div>
         <dt>Email</dt>
-        <dd><a href="mailto:mdjubierahammed@gmail.com">mdjubierahammed@gmail.com</a></dd>
+        <dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd>
       </div>
       <div>
         <dt>Location</dt>
-        <dd>Lubbock, TX, USA</dd>
+        <dd>{contact.location}</dd>
       </div>
       <div>
         <dt>LinkedIn</dt>
-        <dd>
-          <a href="https://www.linkedin.com/in/md-jubier-ahammed/" rel="me noopener">Md Jubier Ahammed</a>
-        </dd>
+        <dd><a href={contact.linkedin.url} rel="me noopener">{contact.linkedin.name}</a></dd>
+      </div>
+      <div>
+        <dt>ORCID</dt>
+        <dd><a href={contact.orcid.url} rel="me noopener">{contact.orcid.id}</a></dd>
+      </div>
+      <div>
+        <dt>Google Scholar</dt>
+        <dd><a href={contact.scholar.url} rel="me noopener">{contact.scholar.name}</a></dd>
       </div>
       <div>
         <dt>CV</dt>
-        <dd><a href="/cv/">Curriculum vitae and certifications</a></dd>
+        <dd><a href="/cv/">Curriculum vitae</a></dd>
       </div>
     </dl>
   </Section>
 </BaseLayout>
 
 <style>
+  /* ---- Hero ---- */
   .hero {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -200,18 +175,6 @@ import logoBUP from '../assets/logo-bup.png';
     line-height: 1.5;
     text-wrap: balance;
     margin-bottom: 1.5rem;
-  }
-
-  .hero__interests {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .hero__interests strong {
-    color: var(--color-text);
-    font-weight: 600;
   }
 
   .hero__links {
@@ -243,21 +206,105 @@ import logoBUP from '../assets/logo-bup.png';
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* The source PNG has a lot of empty space above the head; zoom in and
-       shift so head and shoulders fill the circle. */
     transform: scale(1.9) translateY(21%);
   }
 
-  .subheading {
-    margin: 2.5rem 0 1.25rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--color-border);
+  /* ---- Research interests ---- */
+  .interests {
+    scroll-margin-top: 1.5rem;
+    margin-bottom: var(--section-gap);
+  }
+
+  .interests__statement {
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    max-width: 30ch;
+    text-wrap: balance;
+    margin-bottom: 1.75rem;
+  }
+
+  .interests__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .interest {
+    margin: 0;
+    padding: 1.1rem 1.25rem 1.2rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius);
+  }
+
+  .interest__title {
     font-size: var(--text-md);
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+
+  .interest__blurb {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--color-text-muted);
+  }
+
+  /* ---- Background overview ---- */
+  .overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 2rem 3rem;
+  }
+
+  .overview__heading {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .overview__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .overview__item + .overview__item {
+    margin-top: 1rem;
+  }
+
+  .overview__item--logo {
+    display: flex;
+    gap: 0.9rem;
+    align-items: center;
+  }
+
+  .overview__logo {
+    flex: 0 0 3rem;
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+  }
+
+  .overview__title {
+    margin: 0;
     font-weight: 600;
   }
 
-  .subheading--first {
-    margin-top: 0;
+  .overview__meta {
+    margin: 0.1rem 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
   }
 
   .section-link {
@@ -266,6 +313,7 @@ import logoBUP from '../assets/logo-bup.png';
     font-weight: 500;
   }
 
+  /* ---- Contact ---- */
   .contact {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
@@ -295,6 +343,10 @@ import logoBUP from '../assets/logo-bup.png';
     .hero__portrait {
       order: -1;
       width: 9rem;
+    }
+
+    .interests__statement {
+      font-size: var(--text-xl);
     }
   }
 </style>

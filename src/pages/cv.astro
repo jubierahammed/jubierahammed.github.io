@@ -2,10 +2,22 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import Entry from '../components/Entry.astro';
-import logoTTU from '../assets/logo-texas-tech.png';
-import logoBUP from '../assets/logo-bup.png';
+import {
+  interests,
+  education,
+  researchExperience,
+  teachingExperience,
+  awards,
+  skills,
+  languages,
+} from '../data/profile';
+import { publications } from '../data/publications';
 
 const cvPdf = '/cv/Ahammed_CV.pdf';
+const underReview = publications.filter((p) => p.kind === 'preprint');
+const inPreparation = publications.filter((p) => p.kind === 'in-preparation');
+const conference = publications.filter((p) => p.kind === 'conference');
+const hasCorresponding = publications.some((p) => p.authors.includes('*'));
 ---
 
 <BaseLayout
@@ -21,129 +33,58 @@ const cvPdf = '/cv/Ahammed_CV.pdf';
 
   <section class="cv-section" aria-labelledby="cv-education">
     <h2 id="cv-education">Education</h2>
-
-    <Entry
-      title="M.S. in Geography and Environmental Studies"
-      org="Texas Tech University, Lubbock, TX"
-      dates="Aug 2025 – May 2027 (expected)"
-      meta="GPA: 3.863"
-      logo={logoTTU}
-      logoAlt="Texas Tech University seal"
-    >
-      <p>
-        Thesis: <em
-          >Transferability of a Google Earth Engine Land Cover Classification Framework Between the Ganges and
-          Mississippi Deltas</em
-        >. Advisor: Dr. Chao Xu.
-      </p>
-    </Entry>
-
-    <Entry
-      title="B.S.S. in Disaster and Human Security Management"
-      org="Bangladesh University of Professionals, Dhaka, Bangladesh"
-      dates="Jan 2020 – Jan 2024"
-      meta="GPA: 3.90 / 4.00"
-      logo={logoBUP}
-      logoAlt="Bangladesh University of Professionals logo"
-    >
-      <p>
-        Thesis: <em
-          >Assessing and Prediction of Spatio-temporal Changes of LULC using CA-ANN Model and its Socioeconomic
-          Implications for Coastal Bangladesh: A Case Study of Dacope Sub-district</em
+    {
+      education.map((e) => (
+        <Entry
+          title={e.degree}
+          org={`${e.institution}, ${e.location}`}
+          dates={e.dates}
+          meta={`GPA: ${e.gpa}`}
+          logo={e.logo}
+          logoAlt={e.logoAlt}
         >
-      </p>
-    </Entry>
+          <p>
+            Thesis: <em>{e.thesis}</em>
+            {e.advisor && <Fragment>. Advisor: {e.advisor}.</Fragment>}
+          </p>
+        </Entry>
+      ))
+    }
   </section>
 
   <section class="cv-section" aria-labelledby="cv-interests">
     <h2 id="cv-interests">Research Interests</h2>
-    <p>
-      Natural hazards and disaster risk; remote sensing and GIS; machine learning and GeoAI; spatial analysis; social
-      vulnerability and climate adaptation; land use / land cover change; coastal wetland mapping.
-    </p>
+    <p>{interests.map((i) => i.title).join('; ')}.</p>
   </section>
 
   <section class="cv-section" aria-labelledby="cv-research">
     <h2 id="cv-research">Research Experience</h2>
-
-    <Entry
-      title="Graduate Research"
-      org="Department of Geosciences, Texas Tech University"
-      dates="Aug 2025 – Present"
-      meta="Supervisor: Dr. Chao Xu"
-    >
-      <ul>
-        <li>
-          Conducted a spatial and quantile analysis of infrastructure precarity and social vulnerability during Winter
-          Storm Uri in Harris County, using VIIRS Black Marble nighttime light deficit data against ACS and social
-          vulnerability variables; methods included Spearman correlation, OLS with clustered standard errors, robust
-          regression, quantile regression, Moran's I, and a spatial lag model.
-        </li>
-        <li>
-          Developing a Landsat random forest classification of tidal flats and wetlands in the Ganges Delta in Google
-          Earth Engine, using manually interpreted reference samples and a revised land-cover scheme.
-        </li>
-      </ul>
-    </Entry>
-
-    <Entry
-      title="Independent Research Collaboration"
-      dates="2025 – Present"
-      meta="With M. Shahriar Sonet, Ph.D. candidate in Geospatial Information Sciences, University of Texas at Dallas"
-    >
-      <ul>
-        <li>
-          Conducting a census-tract-level analysis of compound heat-flood exposure and social vulnerability across
-          Houston, Miami, and Norfolk, integrating NFIP flood claims, CDC social vulnerability data, NHGIS tract
-          crosswalks, and GEE-derived land surface temperature.
-        </li>
-      </ul>
-    </Entry>
-
-    <Entry
-      title="Research Consultant, Remote Sensing Division"
-      org="Center for Environmental and Geographic Information Services (CEGIS), Dhaka, Bangladesh"
-      dates="Jan 2024 – Dec 2024"
-    >
-      <ul>
-        <li>Created, updated, and digitized land use / land cover maps for Chittagong division.</li>
-        <li>Georeferenced satellite imagery for digitization.</li>
-        <li>Managed databases and resolved topological errors.</li>
-        <li>Conducted crop pattern analysis.</li>
-      </ul>
-    </Entry>
-
-    <Entry
-      title="Research Assistant, Geospatial Health Studies Division"
-      org="Center for Health Innovation, Research, Action and Learning – Bangladesh (CHIRAL)"
-      dates="Apr 2023 – Dec 2023"
-    >
-      <ul>
-        <li>
-          Collected spatial and non-spatial data and conducted thematic analysis on environmental factors influencing
-          dengue outbreaks, using GIS for disease mapping and risk assessment.
-        </li>
-        <li>Trained interns on mobile data collection and GIS tools (KoboToolbox, ArcGIS).</li>
-        <li>Analyzed and visualized data in Excel and SPSS, producing charts and infographics for project reporting.</li>
-      </ul>
-    </Entry>
+    {
+      researchExperience.map((p) => (
+        <Entry title={p.title} org={p.org} dates={p.dates} meta={p.meta}>
+          <ul>
+            {p.bullets.map((b) => (
+              <li>{b}</li>
+            ))}
+          </ul>
+        </Entry>
+      ))
+    }
   </section>
 
   <section class="cv-section" aria-labelledby="cv-teaching">
     <h2 id="cv-teaching">Teaching Experience</h2>
-
-    <Entry
-      title="Graduate Teaching Assistant"
-      org="Department of Geosciences, Texas Tech University"
-      dates="Aug 2025 – Present"
-      meta="Courses: Introduction to GIS; Regional Geography of the World; Global Environmental Science"
-    >
-      <ul>
-        <li>Grade coursework and exams.</li>
-        <li>Assist students during lab sessions.</li>
-        <li>Hold weekly office hours.</li>
-      </ul>
-    </Entry>
+    {
+      teachingExperience.map((p) => (
+        <Entry title={p.title} org={p.org} dates={p.dates} meta={p.meta}>
+          <ul>
+            {p.bullets.map((b) => (
+              <li>{b}</li>
+            ))}
+          </ul>
+        </Entry>
+      ))
+    }
   </section>
 
   <section class="cv-section" aria-labelledby="cv-publications">
@@ -151,46 +92,57 @@ const cvPdf = '/cv/Ahammed_CV.pdf';
 
     <h3 class="cv-subheading">Under Review</h3>
     <ul class="cv-list">
-      <li>
-        Ahammed, M.J., Xu, C.*, Xu, Y., Zhou, H. Spatial Patterns of Post-Storm Recovery Revealed by Nighttime Lights:
-        Evidence from Harris County, Texas. Under review, <em>ISPRS International Journal of Geo-Information</em>.
-        Preprint: <a href="https://doi.org/10.20944/preprints202609.0372.v1" rel="noopener"
-          >10.20944/preprints202609.0372.v1</a
-        >
-      </li>
-      <li>
-        Ahammed, M.J.*, Sonet, M.S. Social Vulnerability and Compound Heat-Flood Exposure in Houston, Miami, and
-        Norfolk: A Census-Tract-Level Analysis. Under review, <em>Regional Environmental Change</em>. Preprint:
-        <a href="https://doi.org/10.21203/rs.3.rs-10349570/v1" rel="noopener">10.21203/rs.3.rs-10349570/v1</a>
-      </li>
+      {
+        underReview.map((p) => (
+          <li>
+            {p.authors} {p.title}. Under review, <em>{p.venue}</em>.
+            {p.doi && (
+              <Fragment>
+                {' '}
+                Preprint: <a href={`https://doi.org/${p.doi}`} rel="noopener">{p.doi}</a>
+              </Fragment>
+            )}
+          </li>
+        ))
+      }
     </ul>
-    <p class="cv-note no-justify">*Corresponding author</p>
+    {hasCorresponding && <p class="cv-note no-justify">*Corresponding author</p>}
 
-    <h3 class="cv-subheading">In Preparation</h3>
-    <ul class="cv-list">
-      <li>
-        Xu, C., Ahammed, M.J. Tracking Coastal Wetland Dynamics in the Ganges Delta from 1985–2026 Using Google Earth
-        Engine.
-      </li>
-    </ul>
+    {
+      inPreparation.length > 0 && (
+        <Fragment>
+          <h3 class="cv-subheading">In Preparation</h3>
+          <ul class="cv-list">
+            {inPreparation.map((p) => (
+              <li>
+                {p.authors} {p.title}.
+              </li>
+            ))}
+          </ul>
+        </Fragment>
+      )
+    }
 
-    <h3 class="cv-subheading">Conference Presentations</h3>
-    <ul class="cv-list">
-      <li>
-        Ahammed, M.J. Dynamic Trends in Land Use and Land Cover Change with QADI Validation: Exploring the Shifts in
-        Shrimp Farming and Socioeconomic Implications in Coastal Bangladesh's Dacope Sub-district. International
-        Conference on Environmental Science and Resource Management (ICESRM).
-      </li>
-    </ul>
+    {
+      conference.length > 0 && (
+        <Fragment>
+          <h3 class="cv-subheading">Conference Presentations</h3>
+          <ul class="cv-list">
+            {conference.map((p) => (
+              <li>
+                {p.authors} {p.title}. {p.venue}.
+              </li>
+            ))}
+          </ul>
+        </Fragment>
+      )
+    }
   </section>
 
   <section class="cv-section" aria-labelledby="cv-awards">
     <h2 id="cv-awards">Awards, Fellowships &amp; Funding</h2>
     <ul class="cv-list">
-      <li>Graduate Teaching Assistantship, Texas Tech University (Aug 2025 – Present)</li>
-      <li>Department of Geosciences Scholarship, Texas Tech University (Fall 2026)</li>
-      <li>Graduate Field Experience Fellowship, Texas Tech University (Summer 2026)</li>
-      <li>Gary Elbow Scholarship, Department of Geosciences, Texas Tech University (Fall 2025)</li>
+      {awards.map((a) => <li>{a}</li>)}
     </ul>
   </section>
 
@@ -210,50 +162,36 @@ const cvPdf = '/cv/Ahammed_CV.pdf';
         monthly rent against unit attributes and neighborhood income, with diagnostics.
       </li>
     </ul>
-    <p class="cv-note no-justify">Full write-ups, maps, and source code are on the <a href="/projects/">Projects</a> page.</p>
+    <p class="cv-note no-justify">
+      Full write-ups, maps, and source code are on the <a href="/projects/">Projects</a> page.
+    </p>
   </section>
 
   <section class="cv-section" aria-labelledby="cv-skills">
     <h2 id="cv-skills">Technical Skills</h2>
     <dl class="skills">
-      <div>
-        <dt>GIS &amp; Remote Sensing</dt>
-        <dd>ArcGIS Pro, ArcMap, QGIS, Google Earth Engine, ENVI</dd>
-      </div>
-      <div>
-        <dt>Programming &amp; Databases</dt>
-        <dd>Python, JavaScript (Google Earth Engine), R, SQL/PostGIS</dd>
-      </div>
-      <div>
-        <dt>Statistics</dt>
-        <dd>SPSS, Jamovi</dd>
-      </div>
-      <div>
-        <dt>Remote Sensing Data</dt>
-        <dd>Landsat, Sentinel, MODIS, VIIRS Black Marble</dd>
-      </div>
-      <div>
-        <dt>Data Collection</dt>
-        <dd>KoboToolbox</dd>
-      </div>
-      <div>
-        <dt>Graphics</dt>
-        <dd>Adobe Illustrator, Canva</dd>
-      </div>
+      {
+        skills.map((s) => (
+          <div>
+            <dt>{s.label}</dt>
+            <dd>{s.items}</dd>
+          </div>
+        ))
+      }
     </dl>
   </section>
 
   <section class="cv-section" aria-labelledby="cv-languages">
     <h2 id="cv-languages">Languages</h2>
     <dl class="skills">
-      <div>
-        <dt>Bengali</dt>
-        <dd>Native</dd>
-      </div>
-      <div>
-        <dt>English</dt>
-        <dd>Fluent (IELTS overall band 7.5)</dd>
-      </div>
+      {
+        languages.map((l) => (
+          <div>
+            <dt>{l.label}</dt>
+            <dd>{l.items}</dd>
+          </div>
+        ))
+      }
     </dl>
   </section>
 
