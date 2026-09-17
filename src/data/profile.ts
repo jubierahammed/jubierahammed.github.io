@@ -35,8 +35,8 @@ export interface Position {
 }
 
 export const tagline = {
-  lead: 'Disaster risk, remote sensing, GIS, and machine learning:',
-  rest: 'mapping how landscapes change and who bears the cost.',
+  lead: 'Remote sensing, GIS, and machine learning',
+  rest: 'for disaster risk, coastal land change, and social vulnerability.',
 };
 
 export const interestsStatement = 'Earth observation for disaster risk, land change, and the communities exposed to both.';
