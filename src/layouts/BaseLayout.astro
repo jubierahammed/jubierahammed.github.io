@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -43,7 +42,6 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
-    <ClientRouter />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -54,7 +52,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
     <Header />
-    <main id="main" class:list={['container', { 'container--wide': wide }]} transition:name="page">
+    <main id="main" class:list={['container', { 'container--wide': wide }]}>
       <slot />
     </main>
     <Footer />
