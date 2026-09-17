@@ -1,0 +1,365 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Entry from '../components/Entry.astro';
+import logoTTU from '../assets/logo-texas-tech.png';
+import logoBUP from '../assets/logo-bup.png';
+
+const cvPdf = '/cv/Ahammed_CV.pdf';
+---
+
+<BaseLayout
+  title="CV"
+  description="Curriculum vitae of Md Jubier Ahammed: education, research and teaching experience, publications, awards, and technical skills."
+>
+  <PageHeader title="Curriculum Vitae">
+    <p>Graduate researcher in Geography and Environmental Studies, Texas Tech University.</p>
+    <p class="cv-download no-justify">
+      <a class="button" href={cvPdf}>Download CV (PDF)</a>
+    </p>
+  </PageHeader>
+
+  <section class="cv-section" aria-labelledby="cv-education">
+    <h2 id="cv-education">Education</h2>
+
+    <Entry
+      title="M.S. in Geography and Environmental Studies"
+      org="Texas Tech University, Lubbock, TX"
+      dates="Aug 2025 – May 2027 (expected)"
+      meta="GPA: 3.863"
+      logo={logoTTU}
+      logoAlt="Texas Tech University seal"
+    >
+      <p>
+        Thesis: <em
+          >Transferability of a Google Earth Engine Land Cover Classification Framework Between the Ganges and
+          Mississippi Deltas</em
+        >. Advisor: Dr. Chao Xu.
+      </p>
+    </Entry>
+
+    <Entry
+      title="B.S.S. in Disaster and Human Security Management"
+      org="Bangladesh University of Professionals, Dhaka, Bangladesh"
+      dates="Jan 2020 – Jan 2024"
+      meta="GPA: 3.90 / 4.00"
+      logo={logoBUP}
+      logoAlt="Bangladesh University of Professionals logo"
+    >
+      <p>
+        Thesis: <em
+          >Assessing and Prediction of Spatio-temporal Changes of LULC using CA-ANN Model and its Socioeconomic
+          Implications for Coastal Bangladesh: A Case Study of Dacope Sub-district</em
+        >
+      </p>
+    </Entry>
+  </section>
+
+  <section class="cv-section" aria-labelledby="cv-interests">
+    <h2 id="cv-interests">Research Interests</h2>
+    <p>
+      Natural hazards and disaster risk; remote sensing and GIS; machine learning and GeoAI; spatial analysis; social
+      vulnerability and climate adaptation; land use / land cover change; coastal wetland mapping.
+    </p>
+  </section>
+
+  <section class="cv-section" aria-labelledby="cv-research">
+    <h2 id="cv-research">Research Experience</h2>
+
+    <Entry
+      title="Graduate Research"
+      org="Department of Geosciences, Texas Tech University"
+      dates="Aug 2025 – Present"
+      meta="Supervisor: Dr. Chao Xu"
+    >
+      <ul>
+        <li>
+          Conducted a spatial and quantile analysis of infrastructure precarity and social vulnerability during Winter
+          Storm Uri in Harris County, using VIIRS Black Marble nighttime light deficit data against ACS and social
+          vulnerability variables; methods included Spearman correlation, OLS with clustered standard errors, robust
+          regression, quantile regression, Moran's I, and a spatial lag model.
+        </li>
+        <li>
+          Developing a Landsat random forest classification of tidal flats and wetlands in the Ganges Delta in Google
+          Earth Engine, using manually interpreted reference samples and a revised land-cover scheme.
+        </li>
+      </ul>
+    </Entry>
+
+    <Entry
+      title="Independent Research Collaboration"
+      dates="2025 – Present"
+      meta="With M. Shahriar Sonet, Ph.D. candidate in Geospatial Information Sciences, University of Texas at Dallas"
+    >
+      <ul>
+        <li>
+          Conducting a census-tract-level analysis of compound heat-flood exposure and social vulnerability across
+          Houston, Miami, and Norfolk, integrating NFIP flood claims, CDC social vulnerability data, NHGIS tract
+          crosswalks, and GEE-derived land surface temperature.
+        </li>
+      </ul>
+    </Entry>
+
+    <Entry
+      title="Research Consultant, Remote Sensing Division"
+      org="Center for Environmental and Geographic Information Services (CEGIS), Dhaka, Bangladesh"
+      dates="Jan 2024 – Dec 2024"
+    >
+      <ul>
+        <li>Created, updated, and digitized land use / land cover maps for Chittagong division.</li>
+        <li>Georeferenced satellite imagery for digitization.</li>
+        <li>Managed databases and resolved topological errors.</li>
+        <li>Conducted crop pattern analysis.</li>
+      </ul>
+    </Entry>
+
+    <Entry
+      title="Research Assistant, Geospatial Health Studies Division"
+      org="Center for Health Innovation, Research, Action and Learning – Bangladesh (CHIRAL)"
+      dates="Apr 2023 – Dec 2023"
+    >
+      <ul>
+        <li>
+          Collected spatial and non-spatial data and conducted thematic analysis on environmental factors influencing
+          dengue outbreaks, using GIS for disease mapping and risk assessment.
+        </li>
+        <li>Trained interns on mobile data collection and GIS tools (KoboToolbox, ArcGIS).</li>
+        <li>Analyzed and visualized data in Excel and SPSS, producing charts and infographics for project reporting.</li>
+      </ul>
+    </Entry>
+  </section>
+
+  <section class="cv-section" aria-labelledby="cv-teaching">
+    <h2 id="cv-teaching">Teaching Experience</h2>
+
+    <Entry
+      title="Graduate Teaching Assistant"
+      org="Department of Geosciences, Texas Tech University"
+      dates="Aug 2025 – Present"
+      meta="Courses: Introduction to GIS; Regional Geography of the World; Global Environmental Science"
+    >
+      <ul>
+        <li>Grade coursework and exams.</li>
+        <li>Assist students during lab sessions.</li>
+        <li>Hold weekly office hours.</li>
+      </ul>
+    </Entry>
+  </section>
+
+  <section class="cv-section" aria-labelledby="cv-publications">
+    <h2 id="cv-publications">Publications</h2>
+
+    <h3 class="cv-subheading">Under Review</h3>
+    <ul class="cv-list">
+      <li>
+        Ahammed, M.J., Xu, C.*, Xu, Y., Zhou, H. Spatial Patterns of Post-Storm Recovery Revealed by Nighttime Lights:
+        Evidence from Harris County, Texas. Under review, <em>ISPRS International Journal of Geo-Information</em>.
+        Preprint: <a href="https://doi.org/10.20944/preprints202609.0372.v1" rel="noopener"
+          >10.20944/preprints202609.0372.v1</a
+        >
+      </li>
+      <li>
+        Ahammed, M.J.*, Sonet, M.S. Social Vulnerability and Compound Heat-Flood Exposure in Houston, Miami, and
+        Norfolk: A Census-Tract-Level Analysis. Under review, <em>Regional Environmental Change</em>. Preprint:
+        <a href="https://doi.org/10.21203/rs.3.rs-10349570/v1" rel="noopener">10.21203/rs.3.rs-10349570/v1</a>
+      </li>
+    </ul>
+    <p class="cv-note no-justify">*Corresponding author</p>
+
+    <h3 class="cv-subheading">In Preparation</h3>
+    <ul class="cv-list">
+      <li>
+        Xu, C., Ahammed, M.J. Tracking Coastal Wetland Dynamics in the Ganges Delta from 1985–2026 Using Google Earth
+        Engine.
+      </li>
+    </ul>
+
+    <h3 class="cv-subheading">Conference Presentations</h3>
+    <ul class="cv-list">
+      <li>
+        Ahammed, M.J. Dynamic Trends in Land Use and Land Cover Change with QADI Validation: Exploring the Shifts in
+        Shrimp Farming and Socioeconomic Implications in Coastal Bangladesh's Dacope Sub-district. International
+        Conference on Environmental Science and Resource Management (ICESRM).
+      </li>
+    </ul>
+  </section>
+
+  <section class="cv-section" aria-labelledby="cv-awards">
+    <h2 id="cv-awards">Awards, Fellowships &amp; Funding</h2>
+    <ul class="cv-list">
+      <li>Graduate Teaching Assistantship, Texas Tech University (Aug 2025 – Present)</li>
+      <li>Department of Geosciences Scholarship, Texas Tech University (Fall 2026)</li>
+      <li>Graduate Field Experience Fellowship, Texas Tech University (Summer 2026)</li>
+      <li>Gary Elbow Scholarship, Department of Geosciences, Texas Tech University (Fall 2025)</li>
+    </ul>
+  </section>
+
+  <section class="cv-section" aria-labelledby="cv-projects">
+    <h2 id="cv-projects">Class Projects</h2>
+    <ul class="cv-list">
+      <li>
+        <a href="/projects/#buffalo-commons">Site Suitability Analysis for a Bison Preserve ("Buffalo Commons")</a>.
+        Multi-criteria weighted suitability model in ArcGIS Pro across ten Great Plains states.
+      </li>
+      <li>
+        <a href="/projects/#ev-charging">Spatial Database for EV Charging Deserts in Texas</a>. PostgreSQL/PostGIS
+        spatial database and spatial SQL queries relating charger locations, highways, and census tracts.
+      </li>
+      <li>
+        <a href="/projects/#lubbock-rent">Hedonic Rent Pricing Model, Lubbock, Texas</a>. OLS regression in R modeling
+        monthly rent against unit attributes and neighborhood income, with diagnostics.
+      </li>
+    </ul>
+    <p class="cv-note no-justify">Full write-ups, maps, and source code are on the <a href="/projects/">Projects</a> page.</p>
+  </section>
+
+  <section class="cv-section" aria-labelledby="cv-skills">
+    <h2 id="cv-skills">Technical Skills</h2>
+    <dl class="skills">
+      <div>
+        <dt>GIS &amp; Remote Sensing</dt>
+        <dd>ArcGIS Pro, ArcMap, QGIS, Google Earth Engine, ENVI</dd>
+      </div>
+      <div>
+        <dt>Programming &amp; Databases</dt>
+        <dd>Python, JavaScript (Google Earth Engine), R, SQL/PostGIS</dd>
+      </div>
+      <div>
+        <dt>Statistics</dt>
+        <dd>SPSS, Jamovi</dd>
+      </div>
+      <div>
+        <dt>Remote Sensing Data</dt>
+        <dd>Landsat, Sentinel, MODIS, VIIRS Black Marble</dd>
+      </div>
+      <div>
+        <dt>Data Collection</dt>
+        <dd>KoboToolbox</dd>
+      </div>
+      <div>
+        <dt>Graphics</dt>
+        <dd>Adobe Illustrator, Canva</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="cv-section" aria-labelledby="cv-languages">
+    <h2 id="cv-languages">Languages</h2>
+    <dl class="skills">
+      <div>
+        <dt>Bengali</dt>
+        <dd>Native</dd>
+      </div>
+      <div>
+        <dt>English</dt>
+        <dd>Fluent (IELTS overall band 7.5)</dd>
+      </div>
+    </dl>
+  </section>
+
+  <p class="cv-download cv-download--bottom no-justify">
+    <a class="button" href={cvPdf}>Download CV (PDF)</a>
+  </p>
+</BaseLayout>
+
+<style>
+  .button {
+    display: inline-block;
+    padding: 0.55rem 1.1rem;
+    border: 1.5px solid var(--color-accent);
+    border-radius: var(--radius);
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 120ms ease, color 120ms ease;
+  }
+
+  .button:hover {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  .cv-download {
+    margin: 1rem 0 0;
+  }
+
+  .cv-download--bottom {
+    margin-top: var(--section-gap);
+  }
+
+  .cv-section + .cv-section {
+    margin-top: 3rem;
+  }
+
+  .cv-section h2 {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cv-section :global(.entry__content ul) {
+    margin: 0.25rem 0 0;
+    padding-left: 1.1rem;
+    color: var(--color-text-muted);
+  }
+
+  .cv-section :global(.entry__content li) {
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .cv-subheading {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin: 1.5rem 0 0.6rem;
+  }
+
+  .cv-subheading:first-of-type {
+    margin-top: 0;
+  }
+
+  .cv-list {
+    padding-left: 1.1rem;
+    margin: 0;
+  }
+
+  .cv-list li {
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .cv-list li + li {
+    margin-top: 0.5rem;
+  }
+
+  .cv-note {
+    margin: 0.75rem 0 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1rem 2rem;
+    margin: 0;
+  }
+
+  .skills dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 0.2rem;
+  }
+
+  .skills dd {
+    margin: 0;
+  }
+</style>

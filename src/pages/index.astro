@@ -1,0 +1,300 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Entry from '../components/Entry.astro';
+import ResearchCard from '../components/ResearchCard.astro';
+import portrait from '../assets/jubier-ahammed.png';
+import logoTTU from '../assets/logo-texas-tech.png';
+import logoBUP from '../assets/logo-bup.png';
+---
+
+<BaseLayout>
+  <!-- Bio / intro -->
+  <section id="about" class="hero" aria-labelledby="about-heading">
+    <div class="hero__text">
+      <p class="eyebrow">Geography &amp; Environmental Studies · Texas Tech University</p>
+      <h1 id="about-heading">Md Jubier Ahammed</h1>
+      <p class="hero__tagline no-justify">
+        Disaster risk, remote sensing, GIS, and machine learning:<br />mapping how landscapes change and who bears the cost.
+      </p>
+      <p>
+        I got into this field watching disasters unfold, floods, storms, the changing shape of coastlines, and
+        wanting to understand not just where these hazards strike, but who ends up bearing the cost. That question
+        sits behind everything I work on now, as a graduate student in Geography and Environmental Studies at Texas
+        Tech University.
+      </p>
+      <p>
+        My work connects disaster risk, GIS, remote sensing, and machine learning, using satellite data and modeling
+        to map how landscapes change and where people are most exposed, then asking what that means for the
+        communities living there. My background in Disaster and Human Security Management keeps that human dimension
+        central, even when the tools are technical. Before my MS, I worked at CEGIS on land use/land cover mapping
+        and at CHIRAL on GIS based spatial analysis of disease outbreaks, both in Bangladesh, experience that shaped
+        how I think about applying remote sensing to real, on the ground risk. I currently serve as a graduate
+        teaching assistant.
+      </p>
+      <p class="hero__interests">
+        <strong>Research interests:</strong> natural hazards and disaster risk; remote sensing and GIS; machine
+        learning and GeoAI; spatial analysis; social vulnerability and climate adaptation; land use/land cover change;
+        coastal wetland mapping.
+      </p>
+      <ul class="hero__links">
+        <li><a href="#research">Featured research</a></li>
+        <li><a href="/cv/">Curriculum vitae</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <figure class="hero__portrait">
+      <Image src={portrait} alt="Md Jubier Ahammed" width={480} height={480} loading="eager" />
+    </figure>
+  </section>
+
+  <Section id="education" title="Education">
+    <Entry
+      title="M.S. in Geography and Environmental Studies"
+      org="Texas Tech University, Lubbock, TX"
+      dates="Aug 2025 – May 2027 (expected)"
+      meta="GPA: 3.863"
+      logo={logoTTU}
+      logoAlt="Texas Tech University seal"
+    >
+      <p>
+        Thesis: <em
+          >Transferability of a Google Earth Engine Land Cover Classification Framework Between the Ganges and
+          Mississippi Deltas</em
+        >
+      </p>
+    </Entry>
+
+    <Entry
+      title="B.S.S. in Disaster and Human Security Management"
+      org="Bangladesh University of Professionals, Dhaka, Bangladesh"
+      dates="Jan 2020 – Jan 2024"
+      meta="GPA: 3.90 / 4.00"
+      logo={logoBUP}
+      logoAlt="Bangladesh University of Professionals logo"
+    >
+      <p>
+        Thesis: <em
+          >Assessing and Prediction of Spatio-temporal Changes of LULC using CA-ANN Model and its Socioeconomic
+          Implications for Coastal Bangladesh: A Case Study of Dacope Sub-district</em
+        >
+      </p>
+    </Entry>
+  </Section>
+
+  <Section id="experience" title="Experience">
+    <h3 class="subheading subheading--first">Research Experience</h3>
+
+    <Entry title="Graduate Research" org="Department of Geosciences, Texas Tech University" dates="Aug 2025 – Present">
+      <p>
+        Conducting spatial and quantile analysis of infrastructure precarity and social vulnerability during Winter
+        Storm Uri in Harris County, using VIIRS Black Marble nighttime light deficit data against ACS and social
+        vulnerability variables. Also developing a Landsat random forest classification of tidal flats and wetlands in
+        the Ganges Delta using Google Earth Engine.
+      </p>
+    </Entry>
+
+    <Entry title="Independent Research Collaboration" dates="2025 – Present">
+      <p>
+        Working with M. Shahriar Sonet (PhD candidate, University of Texas at Dallas) on a census-tract-level analysis
+        of compound heat-flood exposure and social vulnerability across Houston, Miami, and Norfolk.
+      </p>
+    </Entry>
+
+    <Entry
+      title="Research Consultant, Remote Sensing Division"
+      org="CEGIS, Dhaka, Bangladesh"
+      dates="Jan 2024 – Dec 2024"
+    >
+      <p>
+        Created, updated, and digitized land use/land cover maps for Chittagong division; georeferenced satellite
+        imagery; managed databases and resolved topological errors; conducted crop pattern analysis.
+      </p>
+    </Entry>
+
+    <Entry
+      title="Research Assistant, Geospatial Health Studies Division"
+      org="CHIRAL, Dhaka, Bangladesh"
+      dates="Apr 2023 – Dec 2023"
+    >
+      <p>
+        Collected spatial and non-spatial data and conducted thematic analysis on environmental factors influencing
+        dengue outbreaks. Trained interns on mobile data collection and GIS tools (KoboToolbox, ArcGIS).
+      </p>
+    </Entry>
+
+    <h3 class="subheading">Teaching Experience</h3>
+
+    <Entry
+      title="Graduate Teaching Assistant"
+      org="Department of Geosciences, Texas Tech University"
+      dates="Aug 2025 – Present"
+    >
+      <p>Courses: Introduction to GIS; Regional Geography of the World; Global Environmental Science.</p>
+      <p>Grade coursework and exams, assist students during lab sessions, and hold weekly office hours.</p>
+    </Entry>
+  </Section>
+
+  <Section id="research" title="Featured Research">
+    <ResearchCard
+      title="Spatial Patterns of Post-Storm Recovery Revealed by Nighttime Lights: Evidence from Harris County, Texas"
+      status="Preprint · Under review, ISPRS International Journal of Geo-Information"
+      href="/publications/#post-storm-recovery"
+    />
+
+    <ResearchCard
+      title="Social Vulnerability and Compound Heat-Flood Exposure in Houston, Miami, and Norfolk: A Census-Tract-Level Analysis"
+      status="Preprint · Under review, Regional Environmental Change"
+      href="/publications/#compound-heat-flood"
+    />
+
+    <p class="section-link no-justify"><a href="/publications/">All publications</a> · <a href="/research/">Thesis and ongoing research</a></p>
+  </Section>
+
+  <Section id="contact" title="Contact">
+    <dl class="contact">
+      <div>
+        <dt>Email</dt>
+        <dd><a href="mailto:mdjubierahammed@gmail.com">mdjubierahammed@gmail.com</a></dd>
+      </div>
+      <div>
+        <dt>Location</dt>
+        <dd>Lubbock, TX, USA</dd>
+      </div>
+      <div>
+        <dt>LinkedIn</dt>
+        <dd>
+          <a href="https://www.linkedin.com/in/md-jubier-ahammed/" rel="me noopener">Md Jubier Ahammed</a>
+        </dd>
+      </div>
+      <div>
+        <dt>CV</dt>
+        <dd><a href="/cv/">Curriculum vitae and certifications</a></dd>
+      </div>
+    </dl>
+  </Section>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2rem 3rem;
+    align-items: start;
+    margin-bottom: var(--section-gap);
+  }
+
+  .hero h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .hero__text p {
+    max-width: none;
+  }
+
+  .hero__tagline {
+    font-family: var(--font-serif);
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    text-wrap: balance;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero__interests {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .hero__interests strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .hero__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .hero__links li {
+    margin: 0;
+  }
+
+  .hero__portrait {
+    margin: 0;
+    width: 13rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--color-accent-soft);
+    border: 1px solid var(--color-border);
+  }
+
+  .hero__portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* The source PNG has a lot of empty space above the head; zoom in and
+       shift so head and shoulders fill the circle. */
+    transform: scale(1.9) translateY(21%);
+  }
+
+  .subheading {
+    margin: 2.5rem 0 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--text-md);
+    font-weight: 600;
+  }
+
+  .subheading--first {
+    margin-top: 0;
+  }
+
+  .section-link {
+    margin: 1.5rem 0 0;
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .contact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1.25rem 2rem;
+    margin: 0;
+  }
+
+  .contact dt {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 0.2rem;
+  }
+
+  .contact dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 40rem) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__portrait {
+      order: -1;
+      width: 9rem;
+    }
+  }
+</style>

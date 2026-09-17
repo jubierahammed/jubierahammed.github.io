@@ -1,0 +1,54 @@
+---
+/**
+ * Title-only entry for the Featured Research section on the home page.
+ * Links through to the full write-up on /research.
+ */
+interface Props {
+  title: string;
+  status: string;
+  href: string;
+}
+
+const { title, status, href } = Astro.props;
+---
+
+<article class="card">
+  <p class="card__status no-justify">{status}</p>
+  <h3 class="card__title"><a href={href}>{title}</a></h3>
+</article>
+
+<style>
+  .card {
+    padding: 1.1rem 0 1.25rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .card:last-of-type {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .card__status {
+    margin: 0 0 0.35rem;
+    max-width: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .card__title {
+    font-size: var(--text-lg);
+    margin: 0;
+  }
+
+  .card__title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .card__title a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+</style>

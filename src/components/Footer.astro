@@ -1,0 +1,46 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container container--wide site-footer__inner">
+    <p class="meta">&copy; {year} Md Jubier Ahammed &middot; Texas Tech University</p>
+    <ul class="site-footer__links">
+      <li><a href="mailto:mdjubierahammed@gmail.com">Email</a></li>
+      <li><a href="https://www.linkedin.com/in/md-jubier-ahammed/" rel="me noopener">LinkedIn</a></li>
+      <li><a href="/cv/">CV</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--section-gap);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-block: 1.75rem;
+  }
+
+  .site-footer p {
+    margin: 0;
+  }
+
+  .site-footer__links {
+    display: flex;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--text-sm);
+  }
+
+  .site-footer__links li {
+    margin: 0;
+  }
+</style>

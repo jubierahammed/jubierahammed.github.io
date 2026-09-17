@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ResearchProject from '../components/ResearchProject.astro';
+
+---
+
+<BaseLayout
+  title="Research"
+  description="Research projects by Md Jubier Ahammed on disaster risk, social vulnerability, remote sensing, and land cover classification."
+>
+  <PageHeader title="Research" eyebrow="Projects">
+    <p>
+      My M.S. thesis and other research in progress. Manuscripts under review are listed on the
+      <a href="/publications/">Publications</a> page.
+    </p>
+  </PageHeader>
+
+  <section id="thesis" class="group" aria-labelledby="thesis-heading">
+    <h2 id="thesis-heading">M.S. Thesis</h2>
+
+    <ResearchProject
+      id="ms-thesis"
+      title="Transferability of a Google Earth Engine Land Cover Classification Framework Between the Ganges and Mississippi Deltas"
+      status="M.S. thesis · In progress · Advisor: Dr. Chao Xu"
+      methods="Google Earth Engine, Landsat, seasonal eight-class Random Forest classification, spatially blocked validation, NLCD crosswalk, transition analysis"
+    >
+      <p>
+        Delta wetlands change on two timescales at once. Over decades, sediment starvation, subsidence, embankment,
+        and land conversion reshape the delta plain; within a single year, monsoon flooding, tidal inundation, and
+        crop cycles move the boundary between water, wetland, and farmland across large areas and then move it back.
+        Separating seasonal fluctuation from long-term change requires classifications that are explicitly seasonal
+        as well as multi-decadal, and that is the approach this thesis adopts.
+      </p>
+      <p>
+        The study proceeds in two stages. Stage one establishes a seasonal eight-class Random Forest classification
+        framework for the Ganges Delta, covering 2014 to 2026, and analyses the resulting long-term dynamics. The
+        framework is trained on reference samples derived through visual interpretation of high-resolution imagery
+        and evaluated under spatially blocked validation. My contribution to this stage includes reference-sample
+        collection, code implementation and testing, quality control, result organisation, interpretation, and
+        documentation. Stage two, the principal original contribution, adapts and improves that framework for the
+        Mississippi Delta, where the climate is temperate rather than monsoonal, the wetland vegetation and sediment
+        regimes differ, and the reference data come from the National Land Cover Database rather than manual
+        interpretation. This stage reconsiders the classification scheme against what Mississippi wetland conditions
+        can support, redefines the seasonal windows around the local hydrological year, repeats feature selection,
+        and recalibrates the model, then evaluates class by class what transferred, what required regional
+        modification, and what could not be separated in the second region. The final analysis produces long-term
+        land-cover records and transition matrices for both deltas and compares their dynamics in relation to their
+        contrasting geomorphic, hydrological, ecological, and human settings.
+      </p>
+      <p class="no-justify"><strong>Research questions</strong></p>
+      <ol class="questions">
+        <li>
+          How can the eight-class classification framework developed for the Ganges Delta be adapted to the different
+          land-cover, spectral, hydrological, and reference-data conditions of the Mississippi Delta?
+        </li>
+        <li>
+          Which spectral features, temporal statistics, and class-specific rules are transferable between the two
+          deltas, and which require regional modification to achieve acceptable classification accuracy?
+        </li>
+        <li>
+          How have the extent, spatial distribution, and transitions of the eight land-cover classes changed in the
+          Ganges and Mississippi Deltas over the study period?
+        </li>
+        <li>
+          How are the similarities and differences in land-cover dynamics between the two deltas related to their
+          contrasting geomorphic, hydrological, ecological, and human settings?
+        </li>
+      </ol>
+    </ResearchProject>
+  </section>
+
+  <section id="in-preparation" class="group" aria-labelledby="in-preparation-heading">
+    <h2 id="in-preparation-heading">In Preparation</h2>
+
+    <ResearchProject
+      id="ganges-wetlands"
+      title="Tracking Coastal Wetland Dynamics in the Ganges Delta, 1985–2026"
+      status="In preparation · with Dr. Chao Xu"
+      methods="Google Earth Engine, Landsat, ArcGIS Pro, ArcPy"
+    >
+      <p>
+        A four-decade look at how the Ganges Delta's wetlands have shifted, built on reference samples I
+        derived through visual interpretation of high-resolution imagery and digitised in ArcGIS Pro, with a custom
+        Python workflow to keep attribute data consistent across editing sessions.
+      </p>
+    </ResearchProject>
+
+    <ResearchProject
+      id="baton-rouge-lst"
+      title="Land Surface Temperature and Socioeconomic Disproportionality in Baton Rouge's Industrial Corridor"
+      status="Ongoing"
+      methods="Google Earth Engine, Random Forest, XGBoost, SHAP/PDP, spatial regression"
+    >
+      <p>
+        Louisiana's industrial corridor runs hotter than its surroundings, but is that heat driven by land cover and
+        infrastructure alone, or does it also track who lives there? This two-stage project first uses tree-based
+        machine learning, Random Forest, XGBoost, and Gradient Boosting, interpreted through SHAP and partial
+        dependence plots, to identify what physically drives land surface temperature across three clean Landsat
+        scenes spanning a decade. The second stage tests whether the resulting heat patterns disproportionately burden
+        specific socioeconomic groups, using a deliberately conservative regression design that avoids composite
+        indices and multicollinear variables.
+      </p>
+    </ResearchProject>
+  </section>
+</BaseLayout>
+
+<style>
+  .group + .group {
+    margin-top: var(--section-gap);
+  }
+
+  .questions {
+    padding-left: 1.25rem;
+    color: var(--color-text-muted);
+  }
+
+  .questions li {
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .questions li + li {
+    margin-top: 0.5rem;
+  }
+
+  .group h2 {
+    margin-bottom: 1.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+</style>

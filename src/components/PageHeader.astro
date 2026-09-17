@@ -1,0 +1,37 @@
+---
+/**
+ * Title block for the standalone pages (Research, Coursework, ...).
+ */
+interface Props {
+  title: string;
+  eyebrow?: string;
+}
+
+const { title, eyebrow } = Astro.props;
+---
+
+<header class="page-header">
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h1>{title}</h1>
+  <div class="page-header__lede">
+    <slot />
+  </div>
+</header>
+
+<style>
+  .page-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-header h1 {
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header__lede :global(p) {
+    color: var(--color-text-muted);
+    font-size: var(--text-md);
+    margin-bottom: 0;
+  }
+</style>

@@ -1,0 +1,32 @@
+---
+/**
+ * A labelled home-page section with an anchor id for in-page navigation.
+ */
+interface Props {
+  id: string;
+  title: string;
+  eyebrow?: string;
+}
+
+const { id, title, eyebrow } = Astro.props;
+---
+
+<section id={id} class="section" aria-labelledby={`${id}-heading`}>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h2 id={`${id}-heading`}>{title}</h2>
+  <slot />
+</section>
+
+<style>
+  .section {
+    scroll-margin-top: 1.5rem;
+  }
+
+  .section + .section {
+    margin-top: var(--section-gap);
+  }
+
+  .section h2 {
+    margin-bottom: 1.25rem;
+  }
+</style>

@@ -1,0 +1,147 @@
+---
+/**
+ * One project on the Projects page: heading, narrative (slot), methods line,
+ * optional collapsible source script, and an image gallery.
+ */
+import { Code } from 'astro:components';
+import Gallery from './Gallery.astro';
+import type { GalleryImage } from './Gallery.astro';
+
+interface Props {
+  id: string;
+  title: string;
+  /** Short context line under the title, e.g. "Lab 06 · ArcGIS Pro". */
+  meta?: string;
+  methods?: string;
+  images?: GalleryImage[];
+  columns?: 2 | 3 | 4;
+  script?: {
+    code: string;
+    lang: 'r' | 'sql' | 'python';
+    filename: string;
+  };
+}
+
+const { id, title, meta, methods, images = [], columns = 3, script } = Astro.props;
+---
+
+<article id={id} class="project" aria-labelledby={`${id}-title`}>
+  <header class="project__header">
+    <h3 id={`${id}-title`} class="project__title">{title}</h3>
+    {meta && <p class="project__meta no-justify">{meta}</p>}
+  </header>
+
+  <div class="project__body">
+    <slot />
+  </div>
+
+  {methods && <p class="project__methods no-justify"><strong>Methods:</strong> {methods}</p>}
+
+  {
+    script && (
+      <details class="project__script">
+        <summary>
+          View source <code>{script.filename}</code>
+        </summary>
+        <Code code={script.code} lang={script.lang} theme="github-light" wrap />
+      </details>
+    )
+  }
+
+  {images.length > 0 && <Gallery images={images} columns={columns} />}
+</article>
+
+<style>
+  .project {
+    scroll-margin-top: 1.5rem;
+  }
+
+  .project + .project {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project__header {
+    margin-bottom: 1rem;
+  }
+
+  .project__title {
+    font-size: var(--text-lg);
+    margin-bottom: 0.25rem;
+  }
+
+  .project__meta {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .project__body :global(p) {
+    max-width: none;
+  }
+
+  .project__body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .project__methods {
+    margin: 1rem 0 0;
+    max-width: none;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .project__methods strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .project__script {
+    margin-top: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .project__script summary {
+    cursor: pointer;
+    padding: 0.7rem 1rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-accent);
+    list-style: none;
+  }
+
+  .project__script summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .project__script summary::before {
+    content: '▸';
+    display: inline-block;
+    width: 1.1em;
+    transition: transform 120ms ease;
+  }
+
+  .project__script[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .project__script summary code {
+    color: var(--color-text-muted);
+    font-size: 0.85em;
+  }
+
+  .project__script :global(pre) {
+    margin: 0;
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    border-radius: 0 0 var(--radius) var(--radius);
+    padding: 1rem 1.25rem;
+    font-size: 0.8rem;
+    line-height: 1.55;
+    max-height: 32rem;
+    overflow: auto;
+  }
+</style>

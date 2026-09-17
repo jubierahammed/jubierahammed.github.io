@@ -1,0 +1,609 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ProjectEntry from '../components/ProjectEntry.astro';
+import Lightbox from '../components/Lightbox.astro';
+import type { GalleryImage } from '../components/Gallery.astro';
+
+import tornadoScript from '../scripts/tornado_property_damage.R?raw';
+import urbanRuralScript from '../scripts/urban_rural_classification.R?raw';
+import airbnbScript from '../scripts/dallas_airbnb_pricing.R?raw';
+import bikeshareScript from '../scripts/bikeshare_ridership.R?raw';
+import wildfireScript from '../scripts/wildfire_incidents.R?raw';
+import earthquakeScript from '../scripts/earthquake_comparison.R?raw';
+import rentScript from '../scripts/lubbock_rent_model.R?raw';
+import jenBarrysSql from '../scripts/jen_and_barrys_site_selection.sql?raw';
+import evSql from '../scripts/ev_charging_deserts.sql?raw';
+
+// Every image under src/assets/projects/<slug>/NN.ext, matched to captions by sorted filename.
+const allImages = import.meta.glob<ImageMetadata>('../assets/projects/*/*.{jpg,png}', {
+  eager: true,
+  import: 'default',
+});
+
+function gallery(slug: string, captions: string[]): GalleryImage[] {
+  const files = Object.keys(allImages)
+    .filter((key) => key.includes(`/projects/${slug}/`))
+    .sort();
+  if (files.length !== captions.length) {
+    throw new Error(`Project "${slug}": ${files.length} images but ${captions.length} captions.`);
+  }
+  return files.map((key, i) => ({ src: allImages[key], caption: captions[i] }));
+}
+
+const sections = [
+  {
+    id: 'gis-projects',
+    title: 'GIS Projects',
+    items: [
+      ['thematic-mapping', 'Qualitative and quantitative thematic mapping'],
+      ['tornado-damage-map', 'Tornado damage assessment, Anderson County'],
+      ['map-projections', 'Comparing map projections'],
+      ['topographic-junction', 'Topographic mapping of Junction, Texas'],
+      ['hurricane-galveston', 'Hurricane hazard exposure, Galveston'],
+      ['caprock-canyons', 'Caprock Canyons topographic reference map'],
+      ['buffalo-commons', 'Buffalo Commons site suitability'],
+    ],
+  },
+  {
+    id: 'quantitative-projects',
+    title: 'Quantitative Projects',
+    items: [
+      ['tornado-damage-model', 'Tornado property damage model'],
+      ['urban-rural', 'Urban and rural tract classification'],
+      ['dallas-airbnb', 'Dallas Airbnb pricing'],
+      ['bikeshare', 'Seasonal bike-share ridership'],
+      ['wildfire', 'Historical wildfire incidents'],
+      ['earthquake', 'Earthquake activity comparison'],
+      ['lubbock-rent', 'Lubbock hedonic rent model'],
+    ],
+  },
+  {
+    id: 'spatial-database-projects',
+    title: 'Spatial Database Projects',
+    items: [
+      ['jen-barrys', 'PostGIS site selection'],
+      ['ev-charging', 'EV charging deserts in Texas'],
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Projects"
+  description="Coursework projects by Md Jubier Ahammed: ArcGIS Pro cartography and analysis, quantitative modeling in R, and PostGIS spatial databases, with maps, plots, and source code."
+  wide
+>
+  <PageHeader title="Projects" eyebrow="Coursework">
+    <p>
+      Selected graduate coursework in GIS, quantitative methods, and spatial databases. Each project includes the maps
+      or plots it produced and, where applicable, the full R or SQL source.
+    </p>
+  </PageHeader>
+
+  <nav class="toc" aria-label="Projects on this page">
+    {
+      sections.map((section) => (
+        <div class="toc__group">
+          <p class="toc__title no-justify">
+            <a href={`#${section.id}`}>{section.title}</a>
+          </p>
+          <ul>
+            {section.items.map(([slug, label]) => (
+              <li>
+                <a href={`#${slug}`}>{label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </nav>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section id="gis-projects" class="group" aria-labelledby="gis-projects-heading">
+    <h2 id="gis-projects-heading">GIS Projects</h2>
+    <p class="group__lede">
+      Cartography and spatial analysis labs completed in ArcGIS Pro, from classification and projection fundamentals to
+      hazard exposure mapping and multi-criteria suitability modeling.
+    </p>
+
+    <ProjectEntry
+      id="thematic-mapping"
+      title="Comparing Qualitative and Quantitative Thematic Mapping"
+      meta="ArcGIS Pro · Cartographic design"
+      methods="ArcGIS Pro, choropleth classification (natural breaks, quantile, geometric interval, manual interval), cartographic layout design"
+      images={gallery('thematic-mapping', [
+        'United States Census regions (qualitative)',
+        'Contiguous United States by state (qualitative)',
+        'Florida county population by four classification methods (quantitative, 4-panel)',
+      ])}
+    >
+      <p>
+        A foundational cartography exercise contrasting two ways of encoding data on a map. The qualitative maps assign
+        each US state or Census region its own distinct, unordered color, appropriate when categories have no inherent
+        rank. The quantitative map takes the opposite approach: Florida county population data classified four
+        different ways, natural breaks, quantile, geometric interval, and manual interval, laid out side by side to
+        show how the same underlying numbers can tell visually different stories depending on how the class breaks are
+        chosen. Each map includes full cartographic elements: title, legend, scale bar, north arrow, and author block.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="tornado-damage-map"
+      title="Tornado Damage Assessment Mapping, Anderson County, Texas"
+      meta="ArcGIS Pro · Damage assessment"
+      methods="ArcGIS Pro, parcel-level damage classification, tornado track symbology by F-scale, satellite basemap overlay"
+      columns={2}
+      images={gallery('tornado-damage-map', ['Tornado damage map, Anderson County, Texas'])}
+    >
+      <p>
+        A layered damage-assessment map overlaying a tornado's actual path, symbolized by its Fujita-scale strength
+        along the track, against parcel-level damage severity classification across the affected corridor. Set against
+        a satellite basemap, the map shows how damage severity concentrates directly along the tornado's path and
+        tapers outward, with the most extensive damage clustering where the track crosses through developed areas.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="map-projections"
+      title="Comparing Map Projections at World and Regional Scales"
+      meta="ArcGIS Pro · Coordinate systems"
+      methods="ArcGIS Pro, coordinate system and projection design (Mercator, Miller, Mollweide, Robinson, Fuller, Goode Homolosine, Stereographic, Albers Equal Area Conic)"
+      images={gallery('map-projections', [
+        'World Mercator',
+        'Miller Cylindrical',
+        'World Mollweide',
+        'World Robinson',
+        'World Fuller (Dymaxion)',
+        'Goode Homolosine (Land)',
+        'North Pole Stereographic',
+        'USA Contiguous Albers Equal Area Conic',
+        'North America Albers Equal Area Conic',
+      ])}
+    >
+      <p>
+        A survey of nine map projections, each chosen to illustrate a specific trade-off in how a curved Earth gets
+        flattened onto a page. At the world scale: Mercator (angle-preserving, but distorts area toward the poles),
+        Miller Cylindrical (a compromise variant of Mercator), Mollweide and Robinson (both prioritizing a visually
+        balanced whole-Earth view over strict accuracy), Fuller's Dymaxion (an unconventional polyhedral unfolding that
+        keeps continents' shapes and relative sizes intact), and Goode Homolosine (an interrupted projection preserving
+        land-area accuracy at the cost of oceanic continuity). At regional scale: a North Pole stereographic view, and
+        two Albers Equal Area Conic projections (contiguous US and North America), the standard choice for
+        accurate-area regional mapping in this hemisphere.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="topographic-junction"
+      title="Topographic Mapping of Junction, Texas: Comparing Base Layers"
+      meta="ArcGIS Pro · Terrain representation"
+      methods="ArcGIS Pro, DEM hillshade rendering, contour generation (index and intermediate), historical topographic map georeferencing, NAIP aerial imagery integration"
+      images={gallery('topographic-junction', [
+        'Topographic map with DEM hillshade',
+        'Topographic map with historical topographic map (HTMC) base',
+        'Topographic map with NAIP aerial imagery base',
+      ])}
+    >
+      <p>
+        The same terrain dataset for Junction, Texas, elevation points, index contours, and river features, mapped over
+        three different base layers to see how each changes what the terrain communicates. Against a DEM-derived
+        hillshade, the contours read as pure topography. Against a scanned historical topographic map (HTMC), the same
+        contours overlay directly onto the original USGS quad sheet, showing built infrastructure in context with the
+        terrain. Against NAIP aerial imagery, the contours are laid over real ground photography.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="hurricane-galveston"
+      title="Hurricane Hazard Exposure Mapping, Galveston, Texas"
+      meta="ArcGIS Pro · Hazard exposure"
+      methods="ArcGIS Pro, storm surge inundation modeling, census tract population exposure classification, satellite basemap overlay"
+      columns={2}
+      images={gallery('hurricane-galveston', [
+        'Affected population by census tract under a Category 4 storm surge',
+        'Storm surge inundation zones, Tropical Storm through Category 5',
+      ])}
+    >
+      <p>
+        A two-part hazard analysis overlaying a hypothetical Category 4 hurricane's storm surge zones onto Galveston
+        County's population and coastline. The first map identifies the affected population by census tract, an
+        estimated 170,560 people, classified by exposure intensity within the storm's footprint, showing that the
+        heaviest population exposure concentrates inland (Dickinson, League City, Texas City) rather than on the
+        barrier island itself. The second map, set against satellite imagery, shows the full storm surge inundation
+        model across all hurricane categories (Tropical Storm through Category 5), illustrating how surge severity
+        compounds moving inland along the bay's low-lying shoreline.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="caprock-canyons"
+      title="Topographic Reference Map of Caprock Canyons State Park"
+      meta="ArcGIS Pro · USGS-style quad sheet"
+      methods="ArcGIS Pro, DEM-derived hillshade and contour generation, multi-source data integration, USGS-standard cartographic layout and metadata documentation"
+      columns={2}
+      images={gallery('caprock-canyons', [
+        'Caprock Canyons State Park topographic reference map, Briscoe County, Texas (1:24,000)',
+      ])}
+    >
+      <p>
+        A complete cartographic production covering Caprock Canyons State Park in Briscoe County, Texas, built to the
+        standard of a USGS-style topographic quad sheet. The map integrates elevation contours at a 100-foot interval,
+        hillshade relief, hydrography (perennial and intermittent lakes and streams), the park boundary, and a full road
+        network classified by type, rendered at 1:24,000 scale on a State Plane Texas North projection. The final layout
+        includes a complete metadata block documenting every data source alongside a locator inset showing the park's
+        position within Briscoe County and Texas.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="buffalo-commons"
+      title="Site Suitability Analysis for Restoring the Buffalo Commons"
+      meta="ArcGIS Pro · Multi-criteria suitability model"
+      methods="ArcGIS Pro, weighted multi-criteria overlay analysis, reclassification, USA Contiguous Albers Equal Area Conic projection"
+      columns={4}
+      images={gallery('buffalo-commons', [
+        'Study area: ten Great Plains states',
+        'Population density',
+        'Population change, 2000–2010',
+        'Farmland value',
+        'Percent federal land',
+        'Adjacency to Indian lands',
+        'Final weighted suitability',
+        'Proposed Buffalo Commons boundary with cities and interstates',
+      ])}
+    >
+      <p>
+        The "Buffalo Commons" is a decades-old proposal to return parts of the depopulating Great Plains to native
+        prairie and bison habitat. This project built a multi-criteria suitability model across ten Great Plains states
+        to identify which counties are the strongest candidates, based on population decline, low population density,
+        low farmland value, and proximity to existing tribal lands. Five input layers, population density, population
+        change (2000–2010), farmland value, percent federal land, and adjacency to Indian lands, were each reclassified
+        onto a common suitability scale and combined into a single weighted overlay. The final suitability map
+        identifies where these factors align most strongly, concentrated in parts of Montana, the Dakotas, and eastern
+        New Mexico, culminating in a proposed Buffalo Commons boundary shown against the region's cities and interstate
+        network.
+      </p>
+    </ProjectEntry>
+  </section>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section id="quantitative-projects" class="group" aria-labelledby="quantitative-projects-heading">
+    <h2 id="quantitative-projects-heading">Quantitative Projects</h2>
+    <p class="group__lede">
+      Statistical modeling and exploratory analysis in R. Each project includes the full script, redacted of API keys
+      and personal file paths, and every plot it generated.
+    </p>
+
+    <ProjectEntry
+      id="tornado-damage-model"
+      title="Modeling Tornado Property Damage Using Storm Events and County Demographics"
+      meta="R · Log-linear regression"
+      methods="R, NOAA Storm Events data, US Census ACS (tidycensus), log-linear regression, spatial area calculation"
+      script={{ code: tornadoScript, lang: 'r', filename: 'tornado_property_damage.R' }}
+      images={gallery('tornado-damage-model', [
+        'Distribution of tornado path length',
+        'Distribution of tornado path width',
+        'Distribution of property damage',
+        'Property damage by EF-scale rating',
+        'Correlation matrix of model variables',
+        'Final regression coefficients',
+      ])}
+    >
+      <p>
+        Combined NOAA Storm Events tornado records with US Census ACS county data to test whether property damage from
+        tornadoes is explained by storm characteristics alone, or also by the demographics of the county it hits. After
+        calculating population density from Census geometry and log-transforming the heavily skewed damage, tornado
+        size, and demographic variables, a regression model linked property damage to tornado length and width
+        alongside county home values and population density.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="urban-rural"
+      title="Classifying Urban and Rural Census Tracts in Texas"
+      meta="R · Logistic regression"
+      methods="R, logistic regression, ROC/KS optimization, confusion matrix, tidycensus"
+      script={{ code: urbanRuralScript, lang: 'r', filename: 'urban_rural_classification.R' }}
+      columns={4}
+      images={gallery('urban-rural', [
+        'Tract geometry check map',
+        'Classification accuracy map: correct vs. misclassified tracts',
+        'ROC and Kolmogorov-Smirnov cutoff plot',
+        'Correlation matrix by urban and rural group',
+      ])}
+    >
+      <p>
+        Built a logistic regression model to predict whether a Texas census tract is urban or rural based on median
+        age, income, commute time, and college attainment, merging five separate Census datasets by GEOID. Model
+        accuracy was evaluated with a confusion matrix, then refined using a ROC/Kolmogorov-Smirnov statistic to find
+        the optimal classification cutoff, improving prediction accuracy over the default 0.5 threshold. Misclassified
+        tracts were mapped to see where the model's assumptions broke down.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="dallas-airbnb"
+      title="Modeling Dallas Airbnb Prices and Mapping Where the Model Fails"
+      meta="R · Hedonic regression with spatial residuals"
+      methods="R, hedonic regression, spatial residual mapping, eta-squared effect size"
+      script={{ code: airbnbScript, lang: 'r', filename: 'dallas_airbnb_pricing.R' }}
+      images={gallery('dallas-airbnb', [
+        'Listing locations by price',
+        'Standardized residuals mapped by listing',
+        'Correlation matrix (raw price)',
+        'Normality diagnostics (raw price)',
+        'Normality diagnostics (log price)',
+        'Correlation matrix (log price)',
+        'Price by neighborhood',
+        'Lowest guest ratings by neighborhood',
+        'Final regression coefficients',
+      ])}
+    >
+      <p>
+        A hedonic regression of Dallas Airbnb listing prices against guest ratings, location ratings, bedrooms, and
+        review activity, restricted to entire-home listings under $500. After log-transforming price to correct skew,
+        the model's standardized residuals were mapped spatially, showing not just how well the model performs, but
+        where it over- or under-predicts, and whether that error clusters by neighborhood.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="bikeshare"
+      title="Seasonal Bike-Share Ridership Modeling"
+      meta="R · Linear regression with bootstrap inference"
+      methods="R, linear regression, bootstrap inference, model diagnostics"
+      script={{ code: bikeshareScript, lang: 'r', filename: 'bikeshare_ridership.R' }}
+      columns={4}
+      images={gallery('bikeshare', [
+        'Initial model coefficients',
+        'Initial model diagnostics',
+        'Ridership distribution',
+        'Ridership by season',
+        'Ridership by workday',
+        'Correlation matrix',
+        'Ridership vs. temperature by season (key finding)',
+        'Summer model coefficients',
+        'Summer model diagnostics',
+        'Winter, spring, and fall model coefficients',
+        'Winter, spring, and fall model diagnostics',
+      ])}
+    >
+      <p>
+        An initial regression of daily bike-share ridership against weather and calendar variables looked reasonable
+        until model diagnostics revealed the relationship wasn't consistent across seasons. Splitting the data into
+        Summer versus the other three seasons produced two very different models: summer ridership dropped as it got
+        hotter, while the rest of the year it rose with warmth. Because the summer model's residuals weren't normally
+        distributed, a 10,000-run bootstrap was used to get trustworthy p-values.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="wildfire"
+      title="Mapping Historical Wildfire Incidents Across the US"
+      meta="R · Spatial point mapping"
+      methods="R, sf, mapview, spatial point mapping, log-scale distribution analysis"
+      script={{ code: wildfireScript, lang: 'r', filename: 'wildfire_incidents.R' }}
+      images={gallery('wildfire', [
+        'Fire locations sized by acres burned',
+        'Fires by month',
+        'States with fires over 10,000 acres',
+        'Largest fire per state',
+        'Distribution of acres burned (log scale)',
+      ])}
+    >
+      <p>
+        Using a national historical wildfire incident dataset, this project mapped individual fire locations sized by
+        acres burned, then dug into the seasonal and geographic patterns behind them. After filtering out non-wildfire
+        incidents and incomplete records, the analysis looked at which months see the most fire activity, which states
+        produce the largest individual fires, and how fire size is distributed across the full range from small
+        incidents to major burns.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="earthquake"
+      title="Comparing Earthquake Activity Across California, Nevada, and Alaska"
+      meta="R · Hypothesis testing and effect size"
+      methods="R, t-tests, Cohen's D effect size, spatial mapping"
+      script={{ code: earthquakeScript, lang: 'r', filename: 'earthquake_comparison.R' }}
+      images={gallery('earthquake', [
+        'Base US state map',
+        'California and Nevada earthquakes by magnitude',
+        'Magnitude comparison across California, Nevada, and Alaska',
+        'Average magnitude over the past 30 days',
+        'Magnitude distribution',
+        'Locations with the most intense activity',
+      ])}
+    >
+      <p>
+        A statistical and spatial comparison of recent earthquake magnitudes across three seismically active US states.
+        T-tests and Cohen's D quantified whether magnitude differences between states were both statistically and
+        practically significant, while mapped earthquake locations sized by magnitude gave a spatial view of where
+        activity concentrated.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="lubbock-rent"
+      title="Hedonic Rent Pricing Model, Lubbock, Texas"
+      meta="R · OLS regression with diagnostics"
+      methods="R, OLS multiple regression, variance inflation factors, Shapiro-Wilk test, predicted R² (olsrr)"
+      script={{ code: rentScript, lang: 'r', filename: 'lubbock_rent_model.R' }}
+      columns={2}
+      images={gallery('lubbock-rent', ['Actual vs. predicted monthly rent, colored by bedroom count'])}
+    >
+      <p>
+        Rental housing affordability is a pressing concern for planners, landlords, and tenants alike, yet hedonic
+        housing research has mostly focused on large coastal metros rather than mid-sized, auto-centric university
+        cities. This study uses a hedonic pricing model to ask which apartment-level physical characteristics and
+        neighborhood-level demographic factors best explain variation in monthly rent in Lubbock, Texas, a market where
+        sustained campus-driven demand meets sharp neighborhood income disparities.
+      </p>
+      <p>
+        The dataset comprises 326 apartment listings collected in March 2026, reduced to an analytic sample of 318
+        after removing listings with missing square footage and three implausible outliers. Variable selection was
+        guided by theory and correlation analysis: bedrooms and square footage were retained as unit-level predictors
+        and census-tract median household income as the neighborhood-level predictor, while distance to Texas Tech was
+        dropped because it was highly collinear with neighborhood income and non-significant once income was
+        controlled. The final OLS model explains 76 percent of rent variation with a predicted R² of 0.74, and all
+        three predictors are significant at p &lt; .001. Square footage is the strongest predictor, and every $10,000
+        increase in tract median income adds roughly $25 per month to rent for an otherwise equivalent unit. The result
+        suggests that income-based residential sorting, rather than campus proximity as such, is the dominant spatial
+        process shaping Lubbock's rents.
+      </p>
+    </ProjectEntry>
+  </section>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section id="spatial-database-projects" class="group" aria-labelledby="spatial-database-projects-heading">
+    <h2 id="spatial-database-projects-heading">Spatial Database Projects</h2>
+    <p class="group__lede">
+      Spatial analysis performed entirely inside PostgreSQL/PostGIS, with the SQL and query results shown alongside the
+      final maps.
+    </p>
+
+    <ProjectEntry
+      id="jen-barrys"
+      title="Site Selection Analysis Using a PostGIS Spatial Database"
+      meta="PostgreSQL/PostGIS · Jen &amp; Barry's Ice Cream, hypothetical site selection"
+      methods="PostgreSQL/PostGIS, chained SQL views, spatial joins (ST_Intersects), buffer/distance queries (ST_DWithin), coordinate system projection (ST_Transform)"
+      script={{ code: jenBarrysSql, lang: 'sql', filename: 'jen_and_barrys_site_selection.sql' }}
+      images={gallery('jen-barrys', [
+        'Query results: suitable counties',
+        'Query results: suitable cities',
+        'Query results: final candidate cities',
+        'Query results: final candidate cities with attributes',
+        'Final map of the four candidate cities and suitable counties',
+      ])}
+    >
+      <p>
+        Given a hypothetical ice cream company's expansion criteria, this project built a filtering pipeline entirely
+        inside a PostGIS database to identify the best county-city candidates, without ever pulling data out into
+        another tool. Rather than one complex query, the logic was split into three chained SQL views: the first
+        isolated counties meeting dairy-farming and labor-force thresholds, the second joined in cities meeting crime
+        and university criteria using a spatial <code>ST_Intersects</code> join, and the third applied precise distance
+        requirements (within 10 miles of a recreation area, 20 miles of an interstate) by projecting the geometries on
+        the fly to a local state plane coordinate system for accurate foot-based measurements. The pipeline narrowed
+        the full dataset down to exactly four qualifying cities, visualized on a final map showing the suitable
+        counties and candidate cities across the study region.
+      </p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="ev-charging"
+      title="Spatial Inequities in Electric Vehicle Charging Infrastructure in Texas"
+      meta="PostgreSQL/PostGIS · Final project, Exploring Spatial Databases"
+      methods="PostgreSQL/PostGIS, database schema and ER design, EPSG:3081 projection, string-based key joins, ST_DWithin distance analysis, ST_Intersects corridor analysis, QGIS cartography"
+      script={{ code: evSql, lang: 'sql', filename: 'ev_charging_deserts.sql' }}
+      columns={4}
+      images={gallery('ev-charging', [
+        'tx_ev_stations table in pgAdmin',
+        'tx_major_roads table in pgAdmin',
+        'tx_census_tracts table in pgAdmin',
+        'tx_acs_population table in pgAdmin',
+        'Entity-relationship diagram of the database',
+        'Query 1: populated tracts view',
+        'Query 2: charging deserts by population',
+        'Query 3: priority highway corridors',
+        'Existing public EV charging stations and the Texas Triangle',
+        'Final map: charging deserts, priority corridors, and existing infrastructure',
+      ])}
+    >
+      <p>
+        Texas has over 450,000 registered electric vehicles but only around 4,000 public charging stations, and the
+        private market has clustered most of them inside the "Texas Triangle" of Dallas-Fort Worth, Austin, San
+        Antonio, and Houston or along the I-35 and I-10 corridors. That leaves "charging deserts" in rural West and
+        East Texas and the Panhandle, and in lower-income urban neighborhoods where residents of apartments and rented
+        homes cannot install private chargers. Finding those gaps is a fundamentally spatial problem that involves
+        point, line, and polygon data at once, so this project designed a PostgreSQL/PostGIS database to answer it.
+      </p>
+      <p>
+        Four tables were built from the Alternative Fuels Data Center station list, TIGER/Line primary and secondary
+        roads, TIGER/Line census tracts, and ACS five-year population estimates, with all geometries transformed to
+        EPSG:3081 (Texas Centric Albers Equal Area) so that distances could be measured natively in meters. The
+        analysis ran as three queries. The first joined tabular population data to tract polygons by stripping the
+        long-form ACS identifier down to the 11-digit FIPS code, and dropped tracts with fewer than 1,000 residents so
+        lakes, industrial parks, and airports would not register as deserts. The second used <code>ST_DWithin</code> to
+        flag populated tracts with no public charger within roughly five miles, ordered by population. The third
+        intersected those deserts with the major road network to identify the highways that pass directly through
+        underserved communities and are therefore the highest-priority corridors for new stations. The final map,
+        styled from database views in QGIS, shows existing infrastructure concentrated in the metros, extensive deserts
+        across West Texas, the Panhandle, and South Texas, and the corridors that connect them.
+      </p>
+    </ProjectEntry>
+  </section>
+
+  <Lightbox />
+</BaseLayout>
+
+<style>
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1.5rem 2rem;
+    margin-bottom: var(--section-gap);
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .toc__title {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-serif);
+    font-size: var(--text-md);
+    font-weight: 600;
+  }
+
+  .toc__title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .toc__title a:hover {
+    color: var(--color-accent);
+  }
+
+  .toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--text-sm);
+  }
+
+  .toc li + li {
+    margin-top: 0.3rem;
+  }
+
+  .toc a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .toc a:hover {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+
+  .group {
+    scroll-margin-top: 1.5rem;
+  }
+
+  .group + .group {
+    margin-top: var(--section-gap);
+  }
+
+  .group h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .group__lede {
+    max-width: none;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+</style>
