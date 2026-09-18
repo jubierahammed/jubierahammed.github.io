@@ -63,19 +63,26 @@
   }
 
   // One delegated listener for the whole document; survives page swaps.
+  // Registered in the capture phase so it runs before Astro's <ClientRouter>
+  // click handler, which would otherwise navigate to the raw image file.
   if (!(window as any).__lightboxDelegated) {
     (window as any).__lightboxDelegated = true;
-    document.addEventListener('click', (event) => {
-      const link = (event.target as HTMLElement).closest('a[data-lightbox]') as HTMLAnchorElement | null;
-      if (!link) return;
-      const dialog = currentDialog();
-      if (!dialog) return;
-      event.preventDefault();
-      const scope = link.closest('.gallery') ?? document;
-      group = Array.from(scope.querySelectorAll<HTMLAnchorElement>('a[data-lightbox]'));
-      show(group.indexOf(link));
-      dialog.showModal();
-    });
+    document.addEventListener(
+      'click',
+      (event) => {
+        const link = (event.target as HTMLElement).closest('a[data-lightbox]') as HTMLAnchorElement | null;
+        if (!link) return;
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        const dialog = currentDialog();
+        if (!dialog) return;
+        event.preventDefault();
+        const scope = link.closest('.gallery') ?? document;
+        group = Array.from(scope.querySelectorAll<HTMLAnchorElement>('a[data-lightbox]'));
+        show(group.indexOf(link));
+        dialog.showModal();
+      },
+      { capture: true }
+    );
   }
 
   setup();
