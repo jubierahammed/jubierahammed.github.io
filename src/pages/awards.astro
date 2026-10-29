@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Entry from '../components/Entry.astro';
+import Gallery from '../components/Gallery.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { awards } from '../data/awards';
+---
+
+<BaseLayout
+  title="Awards & Honors"
+  description="Awards, scholarships, fellowships, and competition placements of Md Jubier Ahammed, from the 2026 SWAAG poster competition to disaster hackathons in Bangladesh."
+>
+  <PageHeader title="Awards & Honors">
+    <p>Awards, fellowships, and funding, most recent first.</p>
+  </PageHeader>
+
+  <div class="awards">
+    {
+      awards.map((a) => (
+        <Entry id={a.id} title={a.title} org={a.org} dates={a.dates}>
+          {a.description && <p>{a.description}</p>}
+          {a.links && (
+            <p class="award__links no-justify">
+              {a.links.map((link) => (
+                <a href={link.href} rel={link.href.startsWith('http') ? 'noopener' : undefined}>
+                  {link.label}
+                </a>
+              ))}
+            </p>
+          )}
+          {a.images && <Gallery images={a.images} columns={a.images.length >= 3 ? 3 : 2} />}
+        </Entry>
+      ))
+    }
+  </div>
+
+  <Lightbox />
+</BaseLayout>
+
+<style>
+  .awards :global(.entry + .entry) {
+    margin-top: 2.25rem;
+    padding-top: 2.25rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .award__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+    margin-top: 0.5rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+</style>

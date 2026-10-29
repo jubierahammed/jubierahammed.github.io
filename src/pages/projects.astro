@@ -5,6 +5,8 @@ import PageHeader from '../components/PageHeader.astro';
 import ProjectEntry from '../components/ProjectEntry.astro';
 import Lightbox from '../components/Lightbox.astro';
 import type { GalleryImage } from '../components/Gallery.astro';
+import forewarnTeam from '../assets/awards/forewarn-team.jpg';
+import dmxPresenting from '../assets/awards/dmx3-presenting.jpg';
 
 import tornadoScript from '../scripts/tornado_property_damage.R?raw';
 import urbanRuralScript from '../scripts/urban_rural_classification.R?raw';
@@ -33,6 +35,14 @@ function gallery(slug: string, captions: string[]): GalleryImage[] {
 }
 
 const sections = [
+  {
+    id: 'competition-projects',
+    title: 'Competition Projects',
+    items: [
+      ['flood-rescue-portal', 'Real-time flood rescue and recovery portal'],
+      ['flood-recovery-framework', 'Flood recovery framework'],
+    ],
+  },
   {
     id: 'gis-projects',
     title: 'GIS Projects',
@@ -72,13 +82,14 @@ const sections = [
 
 <BaseLayout
   title="Projects"
-  description="Coursework projects by Md Jubier Ahammed: ArcGIS Pro cartography and analysis, quantitative modeling in R, and PostGIS spatial databases, with maps, plots, and source code."
+  description="Applied projects, competition work, and coursework by Md Jubier Ahammed: flood rescue and recovery concepts, ArcGIS Pro cartography and analysis, quantitative modeling in R, and PostGIS spatial databases, with maps, plots, and source code."
   wide
 >
-  <PageHeader title="Projects" eyebrow="Coursework">
+  <PageHeader title="Projects" eyebrow="Applied Work & Coursework">
     <p>
-      Selected graduate coursework in GIS, quantitative methods, and spatial databases. Each project includes the maps
-      or plots it produced and, where applicable, the full R or SQL source.
+      Applied projects and competition work, followed by selected graduate coursework in GIS, quantitative methods, and
+      spatial databases. Coursework projects include the maps or plots they produced and, where applicable, the full R
+      or SQL source.
     </p>
   </PageHeader>
 
@@ -100,6 +111,50 @@ const sections = [
       ))
     }
   </nav>
+
+  <!-- ------------------------------------------------------------------ -->
+  <section id="competition-projects" class="group" aria-labelledby="competition-projects-heading">
+    <h2 id="competition-projects-heading">Competition Projects</h2>
+    <p class="group__lede">Applied projects and competition work.</p>
+
+    <ProjectEntry
+      id="flood-rescue-portal"
+      title="Real-Time Flood Rescue and Recovery Portal (Concept)"
+      meta="FOREWARN Disaster Hackathon 1.0, Bangladesh, 2023 · Top 16 team"
+      methods="GIS, remote sensing flood mapping, open map data, web mapping"
+      images={[{ src: forewarnTeam, caption: 'With teammates at FOREWARN Disaster Hackathon 1.0, Bangladesh, 2023.' }]}
+    >
+      <p>
+        During floods, rescue teams and affected households often lack a shared, current picture of which roads are
+        passable, where water is rising, and where help is needed. Our team proposed a web portal that combines GIS and
+        satellite remote sensing to map flood extent and guide rescue and recovery in near real time. The idea was
+        selected as one of the top 16 teams in the national hackathon, which was built around open map data and open
+        source tools for humanitarian problems.
+      </p>
+      <p class="no-justify"><a href="/awards/#forewarn-hackathon">Top 16 team, FOREWARN Disaster Hackathon 1.0</a></p>
+    </ProjectEntry>
+
+    <ProjectEntry
+      id="flood-recovery-framework"
+      title="GIS and Remote Sensing Flood Recovery Framework"
+      meta="BUP Disaster Management Exercise (DMX 3.0), 2023 · Second runner-up"
+      methods="GIS, remote sensing flood mapping, recovery planning"
+      images={[
+        {
+          src: dmxPresenting,
+          caption: 'Presenting our flood recovery framework at DMX 3.0, Bangladesh University of Professionals, 2023.',
+        },
+      ]}
+    >
+      <p>
+        The same question from the hackathon, taken from rescue to recovery. For DMX 3.0 at Bangladesh University of
+        Professionals, our team presented a flood recovery framework that uses GIS and satellite remote sensing to
+        assess where floods did damage and to guide how recovery resources are prioritized afterward, including
+        options such as floating and solar-powered units and drone-based support. The team placed second runner-up.
+      </p>
+      <p class="no-justify"><a href="/awards/#dmx-3">Second runner-up, DMX 3.0</a></p>
+    </ProjectEntry>
+  </section>
 
   <!-- ------------------------------------------------------------------ -->
   <section id="gis-projects" class="group" aria-labelledby="gis-projects-heading">

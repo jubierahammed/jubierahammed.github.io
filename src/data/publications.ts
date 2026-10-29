@@ -2,7 +2,12 @@
  * Single source of truth for publications. Used by the Publications page (full
  * entries), the CV page (citations), and the home page (featured titles).
  */
-export type PublicationKind = 'preprint' | 'in-preparation' | 'conference';
+export type PublicationKind = 'published' | 'preprint' | 'in-preparation' | 'conference';
+
+export interface PublicationLink {
+  label: string;
+  href: string;
+}
 
 export interface Publication {
   id: string;
@@ -12,33 +17,43 @@ export interface Publication {
   authors: string;
   /** Journal or conference name. */
   venue?: string;
+  /** Volume, issue, and article number for published papers, e.g. "15(11), 491". */
+  citation?: string;
+  year?: number;
   /** Short status label shown above the title on the Publications page. */
   status: string;
   doi?: string;
   pdf?: string;
+  /** Replaces the default DOI and PDF links on the Publications page. */
+  links?: PublicationLink[];
   abstract?: string;
   narrative?: string;
   methods?: string;
   /** Show on the home page's Featured Research list. */
   featured?: boolean;
+  /** Award or recognition line, e.g. for a conference poster. */
+  award?: { label: string; href: string };
 }
 
 export const publications: Publication[] = [
   {
     id: 'post-storm-recovery',
-    kind: 'preprint',
+    kind: 'published',
     featured: true,
-    title: 'Spatial Patterns of Post-Storm Recovery Revealed by Nighttime Lights: Evidence from Harris County, Texas',
+    title:
+      'What Daily Nighttime Lights Can and Cannot Show About Power Outage and Recovery: Winter Storm Uri in Harris County, Texas',
     authors: 'Ahammed, M.J., Xu, C.*, Xu, Y., Zhou, H.',
     venue: 'ISPRS International Journal of Geo-Information',
-    status: 'Preprint · Under review, ISPRS International Journal of Geo-Information',
-    doi: '10.20944/preprints202609.0372.v1',
-    pdf: '/papers/ahammed-2026-post-storm-recovery-nighttime-lights-preprint.pdf',
-    narrative:
-      "When the Texas power grid collapsed during Winter Storm Uri in 2021, recovery wasn't uniform, some neighborhoods came back online in hours, others took days. This project used NASA's VIIRS Black Marble nighttime light data as a proxy for outage severity and recovery speed, then tested whether that recovery timeline tracked social vulnerability rather than just infrastructure damage. A spatial lag regression model captured the average pattern, but the more telling result came from quantile regression at the 90th percentile, isolating the slowest-recovering tracts, where the link to vulnerability was strongest. Spatial clustering was confirmed with Moran's I and bivariate LISA mapping.",
-    abstract:
-      "Winter Storm Uri (February 2021) caused the largest power grid failure in Texas history, with extensive outages in the state's most populous Harris County. This study integrates NASA Black Marble VNP46A2 nighttime light (NTL) observations with the CDC Social Vulnerability Index (SVI) to characterize post-storm recovery across 1,070 census tracts. Recovery was defined as the first day tract-level NTL reached at least 90% of its pre-storm baseline for three consecutive days. Contrary to the expectation that vulnerable communities recover more slowly, spatial regression revealed a weak, statistically significant negative association between SVI and recovery time (β = −0.556, p = 0.050), with spatial dependence also significant (ρ ≈ 0.47). Local Indicators of Spatial Autocorrelation identified significant clusters of slow recovery in lower-SVI suburban areas and fast recovery in higher-SVI urban neighborhoods. This association was sensitive to the recovery definition, reversing signs under longer persistence requirements. The spatial organization of urban infrastructure, rather than vulnerability alone, may plausibly explain these patterns, though not directly testable with available data. These findings caution against assuming a universal vulnerability–recovery relationship in infrastructure disasters and highlight the sensitivity of nighttime-light-based equity assessments to how recovery is operationally defined.",
-    methods: "R, spatial lag regression, quantile regression, Moran's I, VIIRS Black Marble nighttime light data",
+    citation: '15(11), 491',
+    year: 2026,
+    status: 'Published · ISPRS International Journal of Geo-Information, 2026',
+    doi: '10.3390/ijgi15110491',
+    links: [
+      { label: 'Read the paper', href: 'https://doi.org/10.3390/ijgi15110491' },
+      { label: 'PDF', href: '/papers/ahammed-2026-uri-nighttime-lights-ijgi.pdf' },
+    ],
+    narrative: "When the Texas grid failed during Winter Storm Uri, satellites recorded the lights going out. This paper asks how much daily nighttime-light data can actually tell us about outage and recovery, and where it falls short. Using NASA Black Marble imagery over Harris County, it shows that outage extent is visible but recovery timing depends heavily on how the data are processed, and that apparent links to social vulnerability need to be tested against ordinary night-to-night variation before they can be trusted.",
+    abstract: "Daily nighttime light (NTL) images are widely used to map power outages and recovery, but clouds and quality screening leave gaps. We examined what NASA Black Marble data show about the February 2021 Winter Storm Uri outage in Harris County, Texas. When only high-quality retrievals were used, 16 February was the only usable night during the outage, and the next were 19 to 21 February. On 16 February, 5112 of 13,846 developed pixels (37%) were below half their pre-storm brightness, and 92% of those with an observed return were lit by 21 February. Return dates between these nights are unobservable. Recovery dates from a detector-based workflow depend on smoothing, persistence and aggregation choices; in a controlled experiment with known recovery dates and flag-0 observations only, an unsmoothed rule requiring three consecutive calendar nights has a median detection delay of 12 to 15 days. Compared with 20 ordinary clear nights, 16 February dimming was far more extensive and clustered. However, the estimated average total impact of the Social Vulnerability Index was 10.6 percentage points of reference radiance (95% interval −32.0 to 49.8), within the range estimated on ten ordinary pre-storm nights (−31.9 to 26.8). Single-night community comparisons need an ordinary-night baseline.",
   },
   {
     id: 'compound-heat-flood',
@@ -65,6 +80,16 @@ export const publications: Publication[] = [
     status: 'In preparation',
   },
   {
+    id: 'swaag-2026-poster',
+    kind: 'conference',
+    title: 'Spatial Pattern of Post-storm Recovery Revealed by Nighttime Light: Evidence from Harris County, Texas',
+    authors: 'Ahammed, M.J., Xu, C., Xu, Y., Zhou, H.',
+    venue:
+      'Poster, Southwest Association of American Geographers (SWAAG) Annual Meeting, Student Competition, October 2, 2026',
+    status: 'Conference poster',
+    award: { label: '2nd Place, Graduate Poster', href: '/awards/#swaag-2026' },
+  },
+  {
     id: 'icesrm-dacope',
     kind: 'conference',
     title:
@@ -75,8 +100,8 @@ export const publications: Publication[] = [
   },
 ];
 
-/** Full author list for display on the Publications page (no citation abbreviations). */
+/** Full author list for display on the Publications page (no citation abbreviations); "*" marks the corresponding author. */
 export const displayAuthors: Record<string, string> = {
-  'post-storm-recovery': 'Md Jubier Ahammed, Chao Xu, Yaping Xu, Hanlin Zhou',
-  'compound-heat-flood': 'Md Jubier Ahammed, M Shahriar Sonet',
+  'post-storm-recovery': 'Md Jubier Ahammed, Chao Xu*, Yaping Xu, Hanlin Zhou',
+  'compound-heat-flood': 'Md Jubier Ahammed*, M Shahriar Sonet',
 };

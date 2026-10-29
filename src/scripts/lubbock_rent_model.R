@@ -1,5 +1,5 @@
 # ============================================================
-# Lubbock Apartment Rent — Hedonic Pricing Analysis
+# Lubbock Apartment Rent: Hedonic Pricing Analysis
 # Replication script for: LBB_Apartment_Rent_Paper_second_edition
 # ============================================================
 
@@ -72,7 +72,7 @@ cat("\nShapiro-Wilk: W =", round(sw$statistic, 2), ", p =", sw$p.value, "\n")
 # 6d. Predicted R² (olsrr)
 cat("\nPredicted R²:", round(ols_pred_rsq(model), 3), "\n")
 
-# ── 7. Figure 1 — Actual vs Predicted, colored by BEDS ────────
+# ── 7. Figure 1: Actual vs Predicted, colored by BEDS ────────
 # Palette to match the paper's plot (discrete bedroom categories)
 # Typical ggplot2 default hue palette for 0–4 beds:
 #   0 = #F8766D (coral-red), 1 = #A3A500 (yellow-green),

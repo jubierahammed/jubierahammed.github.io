@@ -1,8 +1,12 @@
 ---
 /**
- * Full project write-up block for the Research page.
+ * Full project write-up block for the Research and Publications pages.
  * Slot holds the narrative paragraphs. Pass `abstract` for papers with a preprint.
+ * Pages that pass `images` must include <Lightbox /> once.
  */
+import Gallery from './Gallery.astro';
+import type { GalleryImage } from './Gallery.astro';
+
 interface Props {
   id: string;
   title: string;
@@ -13,17 +17,29 @@ interface Props {
   doi?: string;
   /** Site-relative path to a hosted PDF. */
   pdf?: string;
+  /** Labelled links shown instead of the default DOI and PDF links. */
+  links?: { label: string; href: string }[];
   methods?: string;
+  images?: GalleryImage[];
+  columns?: 2 | 3 | 4;
 }
 
-const { id, title, status, authors, abstract, doi, pdf, methods } = Astro.props;
-const hasLinks = Boolean(doi || pdf);
+const { id, title, status, authors, abstract, doi, pdf, links, methods, images = [], columns = 2 } = Astro.props;
+const hasLinks = Boolean(links?.length || doi || pdf);
+const hasCorresponding = authors?.includes('*');
 ---
 
 <article id={id} class="project" aria-labelledby={`${id}-title`}>
   <p class="project__status no-justify">{status}</p>
   <h3 id={`${id}-title`} class="project__title">{title}</h3>
-  {authors && <p class="project__authors no-justify">{authors}</p>}
+  {
+    authors && (
+      <p class="project__authors no-justify">
+        {authors}
+        {hasCorresponding && <span class="project__note"> (*corresponding author)</span>}
+      </p>
+    )
+  }
 
   <div class="project__body">
     <slot />
@@ -41,12 +57,17 @@ const hasLinks = Boolean(doi || pdf);
   {
     hasLinks && (
       <p class="project__links no-justify">
-        {doi && (
+        {links?.map((link) => (
+          <a href={link.href} rel={link.href.startsWith('http') ? 'noopener' : undefined}>
+            {link.label}
+          </a>
+        ))}
+        {!links && doi && (
           <span>
             DOI: <a href={`https://doi.org/${doi}`} rel="noopener">{doi}</a>
           </span>
         )}
-        {pdf && (
+        {!links && pdf && (
           <a href={pdf} rel="noopener">
             Preprint PDF
           </a>
@@ -56,6 +77,8 @@ const hasLinks = Boolean(doi || pdf);
   }
 
   {methods && <p class="project__methods no-justify"><strong>Methods:</strong> {methods}</p>}
+
+  {images.length > 0 && <Gallery images={images} columns={columns} />}
 </article>
 
 <style>
@@ -88,6 +111,11 @@ const hasLinks = Boolean(doi || pdf);
     margin: 0 0 1rem;
     font-size: var(--text-sm);
     color: var(--color-text-muted);
+  }
+
+  .project__note {
+    font-size: 0.8rem;
+    color: var(--color-text-faint);
   }
 
   .project__body :global(p) {

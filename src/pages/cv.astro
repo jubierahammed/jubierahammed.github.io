@@ -7,13 +7,14 @@ import {
   education,
   researchExperience,
   teachingExperience,
-  awards,
   skills,
   languages,
 } from '../data/profile';
 import { publications } from '../data/publications';
+import { awards } from '../data/awards';
 
 const cvPdf = '/cv/Ahammed_CV.pdf';
+const published = publications.filter((p) => p.kind === 'published');
 const underReview = publications.filter((p) => p.kind === 'preprint');
 const inPreparation = publications.filter((p) => p.kind === 'in-preparation');
 const conference = publications.filter((p) => p.kind === 'conference');
@@ -90,6 +91,28 @@ const hasCorresponding = publications.some((p) => p.authors.includes('*'));
   <section class="cv-section" aria-labelledby="cv-publications">
     <h2 id="cv-publications">Publications</h2>
 
+    {
+      published.length > 0 && (
+        <Fragment>
+          <h3 class="cv-subheading">Published</h3>
+          <ul class="cv-list">
+            {published.map((p) => (
+              <li>
+                {p.authors} ({p.year}). {p.title}. <em>{p.venue}</em>
+                {p.citation && `, ${p.citation}`}.
+                {p.doi && (
+                  <Fragment>
+                    {' '}
+                    <a href={`https://doi.org/${p.doi}`} rel="noopener">{`https://doi.org/${p.doi}`}</a>
+                  </Fragment>
+                )}
+              </li>
+            ))}
+          </ul>
+        </Fragment>
+      )
+    }
+
     <h3 class="cv-subheading">Under Review</h3>
     <ul class="cv-list">
       {
@@ -131,6 +154,12 @@ const hasCorresponding = publications.some((p) => p.authors.includes('*'));
             {conference.map((p) => (
               <li>
                 {p.authors} {p.title}. {p.venue}.
+                {p.award && (
+                  <Fragment>
+                    {' '}
+                    <strong>{p.award.label}.</strong>
+                  </Fragment>
+                )}
               </li>
             ))}
           </ul>
@@ -142,7 +171,13 @@ const hasCorresponding = publications.some((p) => p.authors.includes('*'));
   <section class="cv-section" aria-labelledby="cv-awards">
     <h2 id="cv-awards">Awards, Fellowships &amp; Funding</h2>
     <ul class="cv-list">
-      {awards.map((a) => <li>{a}</li>)}
+      {
+        awards.map((a) => (
+          <li>
+            <a href={`/awards/#${a.id}`}>{a.cv}</a>
+          </li>
+        ))
+      }
     </ul>
   </section>
 

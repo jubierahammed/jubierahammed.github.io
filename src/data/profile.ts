@@ -149,16 +149,9 @@ export const teachingExperience: Position[] = [
     title: 'Graduate Teaching Assistant',
     org: 'Department of Geosciences, Texas Tech University',
     dates: 'Aug 2025 – Present',
-    meta: 'Courses: Introduction to GIS; Regional Geography of the World; Global Environmental Science',
+    meta: 'Courses: Web Mapping and Geovisualization; Regional Geography of the World; Global Environmental Science',
     bullets: ['Grade coursework and exams.', 'Assist students during lab sessions.', 'Hold weekly office hours.'],
   },
-];
-
-export const awards: string[] = [
-  'Graduate Teaching Assistantship, Texas Tech University (Aug 2025 – Present)',
-  'Department of Geosciences Scholarship, Texas Tech University (Fall 2026)',
-  'Graduate Field Experience Fellowship, Texas Tech University (Summer 2026)',
-  'Gary Elbow Scholarship, Department of Geosciences, Texas Tech University (Fall 2025)',
 ];
 
 export const skills: { label: string; items: string }[] = [
@@ -172,7 +165,7 @@ export const skills: { label: string; items: string }[] = [
 
 export const languages: { label: string; items: string }[] = [
   { label: 'Bengali', items: 'Native' },
-  { label: 'English', items: 'Fluent (IELTS overall band 7.5)' },
+  { label: 'English', items: 'Fluent, IELTS 7.5' },
 ];
 
 export const contact = {

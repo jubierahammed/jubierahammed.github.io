@@ -55,6 +55,16 @@ const positions = [...teachingExperience, ...researchExperience].filter((p) => !
     </figure>
   </section>
 
+  <!-- Recent news -->
+  <aside class="news" aria-label="Recent news">
+    <p class="news__label no-justify">Recent news</p>
+    <p class="news__text no-justify">
+      October 2026: the Winter Storm Uri nighttime-lights paper was{' '}
+      <a href="/publications/#post-storm-recovery">published in ISPRS IJGI</a>, and its poster won{' '}
+      <a href="/awards/#swaag-2026">2nd Place, Graduate Poster, at SWAAG 2026</a>.
+    </p>
+  </aside>
+
   <!-- Research interests -->
   <section id="interests" class="interests" aria-labelledby="interests-heading">
     <p class="eyebrow">Research Interests</p>
@@ -104,6 +114,7 @@ const positions = [...teachingExperience, ...researchExperience].filter((p) => !
                   {p.org ? `${p.org} · ` : ''}
                   {p.dates}
                 </p>
+                {p.meta && <p class="overview__meta no-justify">{p.meta}</p>}
               </li>
             ))
           }
@@ -209,6 +220,35 @@ const positions = [...teachingExperience, ...researchExperience].filter((p) => !
     height: 100%;
     object-fit: cover;
     transform: scale(1.9) translateY(21%);
+  }
+
+  /* ---- Recent news ---- */
+  .news {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    margin: calc(var(--section-gap) * -0.5) 0 var(--section-gap);
+    padding: 0.8rem 1.1rem;
+    border-left: 3px solid var(--color-highlight);
+    border-radius: var(--radius);
+    background: var(--color-accent-tint);
+  }
+
+  .news__label {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .news__text {
+    flex: 1 1 20rem;
+    margin: 0;
+    max-width: none;
+    font-size: var(--text-sm);
   }
 
   /* ---- Research interests ---- */

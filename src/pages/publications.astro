@@ -3,38 +3,51 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ResearchProject from '../components/ResearchProject.astro';
 import { publications, displayAuthors } from '../data/publications';
+import type { Publication } from '../data/publications';
 
+const published = publications.filter((p) => p.kind === 'published');
 const preprints = publications.filter((p) => p.kind === 'preprint');
 const conference = publications.filter((p) => p.kind === 'conference');
+
+const groups: { id: string; heading: string; items: Publication[] }[] = [
+  { id: 'published', heading: 'Published', items: published },
+  { id: 'preprints', heading: 'Preprints · Under Review', items: preprints },
+];
 ---
 
 <BaseLayout
   title="Publications"
-  description="Preprints and conference presentations by Md Jubier Ahammed on post-storm recovery, compound heat-flood exposure, and land cover change."
+  description="Published papers, preprints, and conference presentations by Md Jubier Ahammed on power outage recovery, compound heat-flood exposure, and land cover change."
 >
   <PageHeader title="Publications">
-    <p>Manuscripts under review, with preprints available, and conference presentations.</p>
+    <p>Published papers, manuscripts under review with preprints available, and conference presentations.</p>
   </PageHeader>
 
-  <section id="preprints" class="group" aria-labelledby="preprints-heading">
-    <h2 id="preprints-heading">Preprints · Under Review</h2>
-    {
-      preprints.map((p) => (
-        <ResearchProject
-          id={p.id}
-          title={p.title}
-          status={p.status}
-          authors={displayAuthors[p.id] ?? p.authors}
-          abstract={p.abstract}
-          doi={p.doi}
-          pdf={p.pdf}
-          methods={p.methods}
-        >
-          {p.narrative && <p>{p.narrative}</p>}
-        </ResearchProject>
-      ))
-    }
-  </section>
+  {
+    groups.map(
+      (g) =>
+        g.items.length > 0 && (
+          <section id={g.id} class="group" aria-labelledby={`${g.id}-heading`}>
+            <h2 id={`${g.id}-heading`}>{g.heading}</h2>
+            {g.items.map((p) => (
+              <ResearchProject
+                id={p.id}
+                title={p.title}
+                status={p.status}
+                authors={displayAuthors[p.id] ?? p.authors}
+                abstract={p.abstract}
+                doi={p.doi}
+                pdf={p.pdf}
+                links={p.links}
+                methods={p.methods}
+              >
+                {p.narrative && <p>{p.narrative}</p>}
+              </ResearchProject>
+            ))}
+          </section>
+        )
+    )
+  }
 
   {
     conference.length > 0 && (
@@ -42,8 +55,17 @@ const conference = publications.filter((p) => p.kind === 'conference');
         <h2 id="presentations-heading">Conference Presentations</h2>
         <ul class="presentations">
           {conference.map((p) => (
-            <li>
+            <li id={p.id}>
               {p.authors} "{p.title}." {p.venue}.
+              {p.award && (
+                <Fragment>
+                  {' '}
+                  <a href={p.award.href} class="presentations__award">
+                    {p.award.label}
+                  </a>
+                  .
+                </Fragment>
+              )}
             </li>
           ))}
         </ul>
@@ -71,5 +93,14 @@ const conference = publications.filter((p) => p.kind === 'conference');
   .presentations li {
     text-align: justify;
     hyphens: auto;
+    scroll-margin-top: 1.5rem;
+  }
+
+  .presentations li + li {
+    margin-top: 0.5rem;
+  }
+
+  .presentations__award {
+    font-weight: 600;
   }
 </style>

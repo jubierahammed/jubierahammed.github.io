@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ResearchProject from '../components/ResearchProject.astro';
-
+import Lightbox from '../components/Lightbox.astro';
 ---
 
 <BaseLayout
@@ -11,8 +11,8 @@ import ResearchProject from '../components/ResearchProject.astro';
 >
   <PageHeader title="Research" eyebrow="Projects">
     <p>
-      My M.S. thesis and other research in progress. Manuscripts under review are listed on the
-      <a href="/publications/">Publications</a> page.
+      My M.S. thesis, disaster risk research, and other work in progress. Published papers and manuscripts
+      under review are listed on the <a href="/publications/">Publications</a> page.
     </p>
   </PageHeader>
 
@@ -70,6 +70,39 @@ import ResearchProject from '../components/ResearchProject.astro';
     </ResearchProject>
   </section>
 
+  <section id="disaster-risk" class="group" aria-labelledby="disaster-risk-heading">
+    <h2 id="disaster-risk-heading">Disaster Risk &amp; Social Vulnerability</h2>
+
+    <ResearchProject
+      id="uri-nighttime-lights"
+      title="What Daily Nighttime Lights Can and Cannot Show About Power Outage and Recovery"
+      status="Winter Storm Uri, Harris County, TX · Published in ISPRS International Journal of Geo-Information, 2026"
+      methods="R, VIIRS Black Marble daily nighttime lights, recovery detection workflows, controlled smoothing/persistence experiment, SVI comparison against an ordinary-night baseline"
+      links={[
+        { label: 'Read the paper', href: 'https://doi.org/10.3390/ijgi15110491' },
+        { label: '2nd Place, Graduate Poster, SWAAG 2026', href: '/awards/#swaag-2026' },
+      ]}
+    >
+      <p>
+        When the Texas power grid failed during Winter Storm Uri in 2021, satellites watched the lights go out. This
+        paper asks how far daily NASA Black Marble nighttime-light data can really go in telling that story. During
+        the outage the daily record is thin: usable observations exist for only 16 February, then 19 to 21 February.
+        On 16 February, 37% of developed pixels in Harris County were below half their pre-storm brightness, and 92%
+        of those with an observed return were lit again by 21 February. But the recovery dates that detector
+        workflows produce depend heavily on smoothing and persistence choices, with a median detection delay of 12 to
+        15 days in a controlled experiment. The association with social vulnerability could not be distinguished from
+        ordinary night-to-night variation, so the paper recommends comparing against an ordinary-night baseline before
+        drawing community-level conclusions from a single night.
+      </p>
+      <p>
+        <em>
+          Presented as a poster at SWAAG 2026 (preprint version, "Spatial Pattern of Post-storm Recovery Revealed by
+          Nighttime Light"), where it won 2nd Place in the Graduate Poster competition.
+        </em>
+      </p>
+    </ResearchProject>
+  </section>
+
   <section id="in-preparation" class="group" aria-labelledby="in-preparation-heading">
     <h2 id="in-preparation-heading">In Preparation</h2>
 
@@ -103,6 +136,8 @@ import ResearchProject from '../components/ResearchProject.astro';
       </p>
     </ResearchProject>
   </section>
+
+  <Lightbox />
 </BaseLayout>
 
 <style>
